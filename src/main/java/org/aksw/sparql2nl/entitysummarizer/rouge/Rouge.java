@@ -5,12 +5,10 @@
 package org.aksw.sparql2nl.entitysummarizer.rouge;
 
 import com.aliasi.chunk.Chunk;
-import com.aliasi.chunk.Chunking;
 import com.aliasi.sentences.SentenceChunker;
 import com.aliasi.sentences.SentenceModel;
 import com.aliasi.sentences.IndoEuropeanSentenceModel;
 import com.aliasi.tokenizer.*;
-import com.aliasi.util.Streams;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import java.io.*;
