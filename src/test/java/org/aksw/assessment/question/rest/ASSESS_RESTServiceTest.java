@@ -42,7 +42,7 @@ public class ASSESS_RESTServiceTest {
 	 * Test method for {@link org.aksw.assessment.question.rest.RESTService#getQuestionsJSON2(javax.servlet.ServletContext, org.codehaus.jettison.json.JSONArray, java.util.List, int)}.
 	 * @throws JSONException 
 	 */
-	@Test
+	/*@Test
 	public void testGetQuestionsJSON2() throws JSONException {
 		JSONArray domain = new JSONArray();
 		JSONObject entry = new JSONObject();
@@ -54,7 +54,7 @@ public class ASSESS_RESTServiceTest {
 		List<String> questionTypes = Lists.newArrayList(QuestionType.MC.getName(), QuestionType.JEOPARDY.getName());
 		RESTQuestions restQuestions = restService.getQuestionsJSON2(null, domain, questionTypes, 3);
 		System.out.println(restQuestions);
-	}
+	}*/
 
 	/**
 	 * Test method for {@link org.aksw.assessment.question.rest.RESTService#getApplicableProperties(javax.servlet.ServletContext, java.lang.String)}.
@@ -75,17 +75,18 @@ public class ASSESS_RESTServiceTest {
 	/**
 	 * Test method for {@link org.aksw.assessment.question.rest.RESTService#getEntities(javax.servlet.ServletContext)}.
 	 */
-	@Test
+	/*@Test
 	public void testGetEntities() {
 		restService.getEntities(null);
-	}
+	}*/
 
 	/**
 	 * Test method for {@link org.aksw.assessment.question.rest.RESTService #precomputeGraphs}.
 	 */
-	@Test
+	/*@Test
 	public void testPrecomputeGraphs() {
 		restService.precomputeGraphs(null);
-	}
+	}*/
+
 
 }

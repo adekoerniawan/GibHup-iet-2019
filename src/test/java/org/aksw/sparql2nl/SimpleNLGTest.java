@@ -50,7 +50,7 @@ public class SimpleNLGTest {
 		System.out.println(nounPhrase.getRealisation());
 	}
 	
-	@Test
+	/*@Test
 	public void testNIHLexicon() {
 		String cls = "airport";
 		Lexicon lexicon = new NIHDBLexicon("/home/me/tools/lexAccess2013lite/data/HSqlDb/lexAccess2013.data");
@@ -108,6 +108,6 @@ public class SimpleNLGTest {
         NPPhraseSpec np = nlgFactory.createNounPhrase(nlgFactory.createWord("darts player", LexicalCategory.NOUN));
         np.setPlural(true);
         System.out.println(realiser.realise(np));
-	}
+	}*/
 
 }
