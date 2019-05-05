@@ -6,18 +6,8 @@ package org.aksw.assessment.question;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 import org.aksw.assessment.question.answer.Answer;
 import org.aksw.assessment.question.answer.SimpleAnswer;
@@ -115,7 +105,7 @@ public class MultipleChoiceQuestionGenerator implements QuestionGenerator {
         reasoner = new SPARQLReasoner(qef);
         
         String wordNetDir = "wordnet/" + (SimpleNLGwithPostprocessing.isWindows() ? "windows" : "linux") + "/dict";
-        wordNetDir = this.getClass().getClassLoader().getResource(wordNetDir).getPath();
+        wordNetDir = Objects.requireNonNull(this.getClass().getClassLoader().getResource(wordNetDir)).getPath();
         
         verbalizer = new JeopardyVerbalizer(endpoint, cacheDirectory, wordNetDir);
         verbalizer.setPersonTypes(personTypes);

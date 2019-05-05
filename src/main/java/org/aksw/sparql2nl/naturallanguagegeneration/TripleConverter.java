@@ -97,9 +97,9 @@ public class TripleConverter {
 		
 		if(wordnetDirectory == null){
 			if(SystemUtils.IS_OS_WINDOWS){
-				wordnetDirectory = this.getClass().getClassLoader().getResource("wordnet/windows/dict").getPath();
+				wordnetDirectory = Objects.requireNonNull(this.getClass().getClassLoader().getResource("wordnet/windows/dict")).getPath();
 			} else {
-				wordnetDirectory = this.getClass().getClassLoader().getResource("wordnet/linux/dict").getPath();
+				wordnetDirectory = Objects.requireNonNull(this.getClass().getClassLoader().getResource("wordnet/linux/dict")).getPath();
 			}
 		}
 		
