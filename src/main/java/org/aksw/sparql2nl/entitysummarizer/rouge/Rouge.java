@@ -407,7 +407,9 @@ public class Rouge {
 
     private int matchLCS(String refSent, String testDoc) {
         ArrayList list;
-        ArrayList refList, testList, lcsList;
+        ArrayList refList;
+        ArrayList testList;
+        ArrayList lcsList;
         String curSent;
         int i;
         list = new ArrayList();
