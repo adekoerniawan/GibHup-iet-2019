@@ -3,24 +3,13 @@
  */
 package org.aksw.sparql2nl;
 
-import org.aksw.sparql2nl.naturallanguagegeneration.TripleConverter;
-import org.dllearner.kb.sparql.SparqlEndpoint;
 import org.junit.Test;
-
 import simplenlg.features.Feature;
-import simplenlg.features.Gender;
-import simplenlg.features.LexicalFeature;
 import simplenlg.framework.LexicalCategory;
 import simplenlg.framework.NLGElement;
 import simplenlg.framework.NLGFactory;
 import simplenlg.lexicon.Lexicon;
-import simplenlg.lexicon.NIHDBLexicon;
-import simplenlg.phrasespec.NPPhraseSpec;
-import simplenlg.phrasespec.SPhraseSpec;
 import simplenlg.realiser.english.Realiser;
-
-import com.hp.hpl.jena.graph.NodeFactory;
-import com.hp.hpl.jena.graph.Triple;
 
 /**
  * @author Lorenz Buehmann

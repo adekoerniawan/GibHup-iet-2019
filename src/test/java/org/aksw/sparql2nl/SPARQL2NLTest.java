@@ -4,33 +4,27 @@
  */
 package org.aksw.sparql2nl;
 
-import static org.junit.Assert.*;
-
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.Syntax;
-import java.net.URL;
-import org.aksw.sparql2nl.naturallanguagegeneration.Postprocessor;
-import org.aksw.sparql2nl.naturallanguagegeneration.SimpleNLG;
 import org.aksw.sparql2nl.naturallanguagegeneration.SimpleNLGwithPostprocessing;
-//import org.aksw.sparql2nl.naturallanguagegeneration.SimpleSPARQL2NLConverter;
 import org.dllearner.kb.sparql.SparqlEndpoint;
 import org.junit.Test;
-import simplenlg.framework.DocumentElement;
-import simplenlg.framework.NLGFactory;
 import simplenlg.lexicon.Lexicon;
 import simplenlg.lexicon.NIHDBLexicon;
-import simplenlg.phrasespec.NPPhraseSpec;
-import simplenlg.realiser.english.Realiser;
+
+import java.net.URL;
+
+//import org.aksw.sparql2nl.naturallanguagegeneration.SimpleSPARQL2NLConverter;
 
 
 public class SPARQL2NLTest {
-	
-	@Test
-	public void testSPARQL2NL() throws Exception {
-		Lexicon lexicon = new NIHDBLexicon("/home/me/tools/lexAccess2013lite/data/HSqlDb/lexAccess2013.data");
-		SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
-		//SimpleSPARQL2NLConverter sparql2nlConverter = new SimpleSPARQL2NLConverter(endpoint, "cache/sparql2nl", lexicon);
+
+    @Test
+    public void testSPARQL2NL() throws Exception {
+        Lexicon lexicon = new NIHDBLexicon("/home/me/tools/lexAccess2013lite/data/HSqlDb/lexAccess2013.data");
+        SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
+        //SimpleSPARQL2NLConverter sparql2nlConverter = new SimpleSPARQL2NLConverter(endpoint, "cache/sparql2nl", lexicon);
 		
 		/*SimpleNLGwithPostprocessing snlg = new SimpleNLGwithPostprocessing(endpoint);
 		
@@ -42,10 +36,10 @@ public class SPARQL2NLTest {
 //			nlr = snlg.getNLR(query);
 //			System.out.println(nlr);
 		}*/
-	}
-	
+    }
+
     public static void main(String[] args) {
-       
+
         String query2 = "PREFIX res: <http://dbpedia.org/resource/> "
                 + "PREFIX dbo: <http://dbpedia.org/ontology/> "
                 + "SELECT DISTINCT ?height "
@@ -92,7 +86,7 @@ public class SPARQL2NLTest {
                 + "WHERE { ?uri rdf:type yago:EuropeanCountries . "
                 + "?uri dbo:governmentType ?govern . "
                 + "FILTER regex(?govern,'monarchy','i') . "
-                + "OPTIONAL { ?govern rdf:type dbo:Film . } " 
+                + "OPTIONAL { ?govern rdf:type dbo:Film . } "
                 //+ "FILTER (!BOUND(?date))"
                 + "}";
         String query4 = "PREFIX dbo: <http://dbpedia.org/ontology/> "
@@ -177,7 +171,7 @@ public class SPARQL2NLTest {
                 + "?uri rdfs:label ?string."
                 + "FILTER (?string >\"1970-01-01\"^^xsd:date && lang(?string) = 'en' && !regex(?string,'Presidency','i') && !regex(?string,'and the')) ."
                 + "}";
-        
+
         String query11 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
                 + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
                 + "PREFIX dbo: <http://dbpedia.org/ontology/> "
@@ -263,19 +257,19 @@ public class SPARQL2NLTest {
                 + "?dir1movie <http://data.linkedmdb.org/resource/movie/actor> ?actor ."
                 + "?dir2movie <http://data.linkedmdb.org/resource/movie/actor> ?actor ."
                 + "?dir2movie <http://data.linkedmdb.org/resource/movie/director> ?dir2 ."
-                + "?actor <http://data.linkedmdb.org/resource/movie/actor_name> ?actorName . } " ;
+                + "?actor <http://data.linkedmdb.org/resource/movie/actor_name> ?actorName . } ";
         String query27 = "SELECT DISTINCT ?actorName WHERE {"
                 + "?woody <http://data.linkedmdb.org/resource/movie/director_name> \"Woody Allen\". "
                 + "?movie <http://data.linkedmdb.org/resource/movie/director> ?woody; <http://data.linkedmdb.org/resource/movie/actor> ?actor."
                 + "?actor <http://data.linkedmdb.org/resource/movie/actor_name> ?actorName.}";
-        
+
 //        String[] queries = {query,query2,query2b,query2c,query3,query3b,query4,query5,query6,query7,query8,query9,query10,query11,query14};
-      String[] queries = {query27};
+        String[] queries = {query27};
         try {
             SparqlEndpoint ep = new SparqlEndpoint(new URL("http://greententacle.techfak.uni-bielefeld.de:5171/sparql"));
             Lexicon lexicon = Lexicon.getDefaultLexicon();
             SimpleNLGwithPostprocessing snlg = new SimpleNLGwithPostprocessing(ep);
-            
+
             for (String q : queries) {
                 System.out.println("\n----------------------------------------------------------------");
                 Query sparqlQuery = QueryFactory.create(q, Syntax.syntaxARQ);

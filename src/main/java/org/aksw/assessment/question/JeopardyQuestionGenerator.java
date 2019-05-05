@@ -30,7 +30,6 @@ import org.dllearner.core.owl.ObjectProperty;
 import org.dllearner.kb.sparql.SparqlEndpoint;
 
 import simplenlg.framework.NLGElement;
-import simplenlg.phrasespec.NPPhraseSpec;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;

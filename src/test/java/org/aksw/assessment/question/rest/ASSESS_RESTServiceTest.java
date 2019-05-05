@@ -3,18 +3,8 @@
  */
 package org.aksw.assessment.question.rest;
 
-import static org.junit.Assert.fail;
-
-import java.util.List;
-
-import org.aksw.assessment.question.QuestionType;
-import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.junit.Test;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 /**
  * @author Lorenz Buehmann

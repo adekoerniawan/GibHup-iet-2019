@@ -6,7 +6,6 @@ package org.aksw.sparql2nl.entitysummarizer.dump;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
