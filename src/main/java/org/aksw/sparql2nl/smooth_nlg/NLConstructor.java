@@ -151,14 +151,14 @@ public class NLConstructor {
             }
             return np;
         }
+        
+        
+    private NPPhraseSpec buildNP(Entity e,String sentence,int occurrence) {
 
-
-    private NPPhraseSpec buildNP(Entity e,String string,int occurrence) {
-
-        String s = string.replace("?","");
+        sentence = sentence.replace("?","");
         NPPhraseSpec np = nlg.createNounPhrase("it"); // not a good fallback!
         
-        if (s.replace("?","").equals(e.var)) { // s is primary variable
+        if (sentence.replace("?","").equals(e.var)) { // sentence is primary variable
             if (occurrence == 1) {
                 np = nlg.createNounPhrase("the",e.type);
             } 
@@ -167,9 +167,9 @@ public class NLConstructor {
             }
             occurrence++;
         } 
-        else if (cardbox.getSecondaryVars().contains(s)) { // s is secondary variable
+        else if (cardbox.getSecondaryVars().contains(sentence)) { // sentence is secondary variable
             for (Entity sec : cardbox.secondaries) {
-                if (sec.var.equals(s)) {
+                if (sec.var.equals(sentence)) {
                     np = nlg.createNounPhrase("some",sec.type);
                     // TODO for (cardbox.filters)
                     if (!sec.properties.isEmpty()) {
@@ -181,7 +181,7 @@ public class NLConstructor {
         } 
         else { // s is resource 
             // TODO check whether it is a literal
-            np = nlg.createNounPhrase(queryDBpediaForLabel(s));
+            np = nlg.createNounPhrase(queryDBpediaForLabel(sentence));
         }
         
         return np;
