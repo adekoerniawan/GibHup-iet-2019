@@ -53,40 +53,40 @@ public class CachedDatasetBasedGraphGenerator extends DatasetBasedGraphGenerator
 	private final HashFunction hf = Hashing.md5();
 	private boolean useCache = true;
 
-//	/**
-//	 * @param endpoint
-//	 * @param cacheDirectory
-//	 */
-//	public CachedDatasetBasedGraphGenerator(SparqlEndpoint endpoint, File cacheDirectory) {
-//		super(endpoint, cacheDirectory);
-//		
-//		graphsFolder = new File(cacheDirectory, graphsSubFolder.getName());
-//		graphsFolder.mkdirs();
-//	}
-//	
-//	/**
-//	 * @param endpoint
-//	 * @param cacheDirectory
-//	 */
-//	public CachedDatasetBasedGraphGenerator(SparqlEndpoint endpoint, String cacheDirectory) {
-//		super(endpoint, cacheDirectory);
-//		
-//		if(cacheDirectory != null){
-//			graphsFolder = new File(cacheDirectory, graphsSubFolder.getName());
-//			graphsFolder.mkdirs();
-//		}
-//	}
+	/**
+	 * @param endpoint
+	 * @param cacheDirectory
+	 */
+	public CachedDatasetBasedGraphGenerator(SparqlEndpoint endpoint, File cacheDirectory) {
+		super(endpoint, cacheDirectory);
+
+		graphsFolder = new File(cacheDirectory, graphsSubFolder.getName());
+		graphsFolder.mkdirs();
+	}
+
+	/**
+	 * @param endpoint
+	 * @param cacheDirectory
+	 */
+	public CachedDatasetBasedGraphGenerator(SparqlEndpoint endpoint, String cacheDirectory) {
+		super(endpoint, cacheDirectory);
+
+		if(cacheDirectory != null){
+			graphsFolder = new File(cacheDirectory, graphsSubFolder.getName());
+			graphsFolder.mkdirs();
+		}
+	}
 	
-//	public CachedDatasetBasedGraphGenerator(QueryExecutionFactory qef, File cacheDirectory) {
-//		super(qef, cacheDirectory);
-//		
-//		graphsFolder = new File(cacheDirectory, graphsSubFolder.getName());
-//		graphsFolder.mkdirs();
-//	}
+	public CachedDatasetBasedGraphGenerator(QueryExecutionFactory qef, File cacheDirectory) {
+		super(qef, cacheDirectory);
+
+		graphsFolder = new File(cacheDirectory, graphsSubFolder.getName());
+		graphsFolder.mkdirs();
+	}
 	
-//	public CachedDatasetBasedGraphGenerator(QueryExecutionFactory qef, String cacheDirectory) {
-//		this(qef, new File(cacheDirectory));
-//	}
+	public CachedDatasetBasedGraphGenerator(QueryExecutionFactory qef, String cacheDirectory) {
+		this(qef, new File(cacheDirectory));
+	}
 	
 	/**
 	 * @param endpoint

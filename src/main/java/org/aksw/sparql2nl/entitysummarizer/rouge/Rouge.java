@@ -5,16 +5,11 @@
 package org.aksw.sparql2nl.entitysummarizer.rouge;
 
 import com.aliasi.chunk.Chunk;
-import com.aliasi.chunk.Chunking;
-import com.aliasi.sentences.SentenceChunker;
-import com.aliasi.sentences.SentenceModel;
 import com.aliasi.sentences.IndoEuropeanSentenceModel;
-import com.aliasi.tokenizer.*;
-import com.aliasi.util.Streams;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import java.io.*;
-import java.util.*;
+import com.aliasi.sentences.SentenceChunker;
+import com.aliasi.tokenizer.IndoEuropeanTokenizerFactory;
+import com.aliasi.tokenizer.Tokenizer;
+import com.aliasi.tokenizer.TokenizerFactory;
 import org.aksw.sparql2nl.entitysummarizer.Verbalizer;
 import org.aksw.sparql2nl.entitysummarizer.clustering.hardening.HardeningFactory;
 import org.aksw.sparql2nl.entitysummarizer.dataset.DatasetBasedGraphGenerator;
@@ -22,6 +17,8 @@ import org.dllearner.core.owl.Individual;
 import org.dllearner.core.owl.NamedClass;
 import org.dllearner.kb.sparql.SparqlEndpoint;
 import simplenlg.framework.NLGElement;
+
+import java.util.*;
 
 public class Rouge {
 
@@ -467,7 +464,7 @@ public class Rouge {
     public static void main(String args[]) {
         Rouge rouge = new Rouge();
         rouge.multipleMode = MULTIPLE_MAX;
-        Verbalizer v = new Verbalizer(SparqlEndpoint.getEndpointDBpediaLiveAKSW());
+        Verbalizer v = new Verbalizer(SparqlEndpoint.getEndpointDBpediaLiveAKSW(),"resources/wordnet");
         Individual ind = new Individual("http://dbpedia.org/resource/Chad_Ochocinco");
         NamedClass nc = new NamedClass("http://dbpedia.org/ontology/AmericanFootballPlayer");
 //        Resource r = ResourceFactory.createResource("http://dbpedia.org/resource/Minority_Report_(film)");

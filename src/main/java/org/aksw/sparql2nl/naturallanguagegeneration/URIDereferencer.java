@@ -142,7 +142,7 @@ public class URIDereferencer {
 		}
 	}
 	
-	class DereferencingFailedException extends Exception{
+	public class DereferencingFailedException extends Exception{
 		
 		public DereferencingFailedException(URI uri, Exception cause) {
 			super("Dereferencing " + uri + " failed.", cause);

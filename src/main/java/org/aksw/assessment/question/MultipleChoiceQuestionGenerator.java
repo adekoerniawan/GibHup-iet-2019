@@ -131,7 +131,7 @@ public class MultipleChoiceQuestionGenerator implements QuestionGenerator {
 		this.restrictions = restrictions;
 		this.blackList = blackList;
 		
-        literalConverter = new LiteralConverter(new URIConverter(endpoint, cacheDirectory));
+        literalConverter = new LiteralConverter(new URIConverter(qef, cacheDirectory));
         
         qef = new QueryExecutionFactoryHttp(endpoint.getURL().toString(), endpoint.getDefaultGraphURIs());
         if(cacheDirectory != null){

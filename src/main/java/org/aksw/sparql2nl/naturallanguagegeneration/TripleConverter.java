@@ -3,16 +3,15 @@
  */
 package org.aksw.sparql2nl.naturallanguagegeneration;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import org.aksw.jena_sparql_api.cache.core.QueryExecutionFactoryCacheEx;
+import com.google.common.collect.Lists;
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.NodeFactory;
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.graph.impl.LiteralLabel;
+import com.hp.hpl.jena.vocabulary.OWL;
+import com.hp.hpl.jena.vocabulary.RDF;
+import com.hp.hpl.jena.vocabulary.RDFS;
 import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
 import org.aksw.jena_sparql_api.http.QueryExecutionFactoryHttp;
 import org.aksw.sparql2nl.naturallanguagegeneration.property.NounPredicateConversion;
@@ -42,15 +41,8 @@ import simplenlg.phrasespec.PPPhraseSpec;
 import simplenlg.phrasespec.SPhraseSpec;
 import simplenlg.phrasespec.VPPhraseSpec;
 import simplenlg.realiser.english.Realiser;
-import com.google.common.collect.Lists;
-import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
-import com.hp.hpl.jena.graph.Node;
-import com.hp.hpl.jena.graph.NodeFactory;
-import com.hp.hpl.jena.graph.Triple;
-import com.hp.hpl.jena.graph.impl.LiteralLabel;
-import com.hp.hpl.jena.vocabulary.OWL;
-import com.hp.hpl.jena.vocabulary.RDF;
-import com.hp.hpl.jena.vocabulary.RDFS;
+
+import java.util.*;
 
 /**
  * Convert triple(s) into natural language.
@@ -138,7 +130,7 @@ public class TripleConverter {
 	/**
 	 * Return a textual representation for the given triples.
 	 * Currently we assume that all triples have the same subject!
-	 * @param t the triples to convert
+	 * @param triples the triples to convert
 	 * @return the textual representation
 	 */
 	public String convertTriplesToText(Collection<Triple> triples){
@@ -431,7 +423,7 @@ public class TripleConverter {
 	/**
 	 * Convert a triple pattern into "v(PREDICATE)s of v(OBJECT)"
 	 * @param t the triple
-	 * @param negated if phrase is negated 
+	 * @param objectElement if phrase is negated
 	 * @return the phrase
 	 */
 	public NPPhraseSpec convertTriplePatternCompactOfForm(Triple t, NLGElement objectElement) {
@@ -550,7 +542,6 @@ public class TripleConverter {
 							}
 								break;
 							default:
-								;
 							}
 						}
 					}
