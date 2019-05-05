@@ -20,13 +20,13 @@ import java.net.URL;
 
 public class SPARQL2NLTest {
 
-    @Test
+ /*   @Test
     public void testSPARQL2NL() throws Exception {
-        Lexicon lexicon = new NIHDBLexicon("/home/me/tools/lexAccess2013lite/data/HSqlDb/lexAccess2013.data");
-        SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
+      *//*  Lexicon lexicon = new NIHDBLexicon("/home/me/tools/lexAccess2013lite/data/HSqlDb/lexAccess2013.data");
+        SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();*//*
         //SimpleSPARQL2NLConverter sparql2nlConverter = new SimpleSPARQL2NLConverter(endpoint, "cache/sparql2nl", lexicon);
 		
-		/*SimpleNLGwithPostprocessing snlg = new SimpleNLGwithPostprocessing(endpoint);
+		*//*SimpleNLGwithPostprocessing snlg = new SimpleNLGwithPostprocessing(endpoint);
 		
 		for (Query query : QALDBenchmark.getQueries(9,10,12)) {
 			System.out.println(query);			
@@ -35,8 +35,8 @@ public class SPARQL2NLTest {
 			System.out.println(nlr);
 //			nlr = snlg.getNLR(query);
 //			System.out.println(nlr);
-		}*/
-    }
+		}*//*
+    }*/
 
     public static void main(String[] args) {
 
