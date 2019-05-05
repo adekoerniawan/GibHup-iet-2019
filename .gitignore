@@ -7,3 +7,7 @@ log/*
 .settings/*
 *.lsq
 /target/
+
+.idea
+/sparql2nl.iml
+/logs/
