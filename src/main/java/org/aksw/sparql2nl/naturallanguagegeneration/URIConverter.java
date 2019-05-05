@@ -3,7 +3,6 @@ package org.aksw.sparql2nl.naturallanguagegeneration;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.aksw.jena_sparql_api.cache.core.QueryExecutionFactoryCacheEx;

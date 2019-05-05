@@ -169,7 +169,7 @@ public class NLConstructor {
         } 
         else if (cardbox.getSecondaryVars().contains(sentence)) { // sentence is secondary variable
             for (Entity sec : cardbox.secondaries) {
-                if (sec.var.equals(s)) {
+                if (sec.var.equals(sentence)) {
                     np = nlg.createNounPhrase("some",sec.type);
                     // TODO for (cardbox.filters)
                     if (!sec.properties.isEmpty()) {
@@ -181,7 +181,7 @@ public class NLConstructor {
         } 
         else { // s is resource 
             // TODO check whether it is a literal
-            np = nlg.createNounPhrase(queryDBpediaForLabel(s));
+            np = nlg.createNounPhrase(queryDBpediaForLabel(sentence));
         }
         
         return np;

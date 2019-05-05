@@ -47,8 +47,8 @@ public class StatisticalFunctionalityDetector implements FunctionalityDetector{
 	}
 
 	@Override
-	public boolean isFunctional(String iri) {
-		Set<OWLDataPropertyAxiom> axioms = ontology.getAxioms(dataFactory.getOWLDataProperty(IRI.create(iri)));
+	public boolean isFunctional(String uri) {
+		Set<OWLDataPropertyAxiom> axioms = ontology.getAxioms(dataFactory.getOWLDataProperty(IRI.create(uri)));
 		if(!axioms.isEmpty()){
 			Set<OWLAnnotation> annotations = axioms.iterator().next().getAnnotations(dataFactory.getOWLAnnotationProperty(confidencePropertyIRI));
 			OWLLiteral val = (OWLLiteral) annotations.iterator().next().getValue();
@@ -57,7 +57,7 @@ public class StatisticalFunctionalityDetector implements FunctionalityDetector{
 				return true;
 			} 
 		}
-		Set<OWLObjectPropertyAxiom> axioms2 = ontology.getAxioms(dataFactory.getOWLObjectProperty(IRI.create(iri)));
+		Set<OWLObjectPropertyAxiom> axioms2 = ontology.getAxioms(dataFactory.getOWLObjectProperty(IRI.create(uri)));
 		if(!axioms.isEmpty()){
 			Set<OWLAnnotation> annotations = axioms.iterator().next().getAnnotations(dataFactory.getOWLAnnotationProperty(confidencePropertyIRI));
 			OWLLiteral val = (OWLLiteral) annotations.iterator().next().getValue();

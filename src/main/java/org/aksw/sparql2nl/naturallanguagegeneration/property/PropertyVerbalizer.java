@@ -40,40 +40,40 @@ import edu.stanford.nlp.util.CoreMap;
  *
  */
 public class PropertyVerbalizer {
-	
+
     private static final Logger logger = Logger.getLogger(PropertyVerbalizer.class);
-    
+
     private double threshold = 2.0;
     private Preposition preposition;
     WordNetDatabase database;
-    
+
     private final String VERB_PATTERN = "^((VP)|(have NP)|(be NP P)|(be VP P)|(VP NP)).*";
 	private StanfordCoreNLP pipeline;
 	private boolean useLinguistics = true;
-	
+
 	private final List<String> auxiliaryVerbs = Lists.newArrayList("do", "have", "be", "shall", "can", "may");
 
 	private URIConverter uriConverter;
-	
+
     public PropertyVerbalizer(SparqlEndpoint endpoint, String cacheDirectory, String wordnetDictionary) {
         this(new QueryExecutionFactoryHttp(endpoint.getURL().toString(), endpoint.getDefaultGraphURIs()), wordnetDictionary);
     }
-    
+
     public PropertyVerbalizer(Model model, String wordnetDictionary) {
         this(new QueryExecutionFactoryModel(model), wordnetDictionary);
     }
-    
+
     public PropertyVerbalizer(QueryExecutionFactory qef, String wordnetDictionary) {
         this(new URIConverter(qef), wordnetDictionary);
     }
-    
+
     public PropertyVerbalizer(URIConverter uriConverter, String wordnetDictionary) {
         this.uriConverter = uriConverter;
-        
+
 		System.setProperty("wordnet.database.dir", wordnetDictionary);
         database = WordNetDatabase.getFileInstance();
         preposition = new Preposition(this.getClass().getClassLoader().getResourceAsStream("preposition_list.txt"));
-        
+
         Properties props = new Properties();
 		props.put("annotators", "tokenize, ssplit, pos, lemma, parse");
 		props.put("ssplit.isOneSentence","true");
@@ -82,32 +82,32 @@ public class PropertyVerbalizer {
     
     public PropertyVerbalization verbalize(String propertyURI){
     	logger.debug("Getting lexicalization type for \"" + propertyURI + "\"...");
-    	
+
     	//get textual representation for the property URI
     	String propertyText = uriConverter.convert(propertyURI);
-    	
+
     	//normalize the text, e.g. to lower case
     	propertyText = normalize(propertyText);
-    	
+
     	//try to use linguistical information
     	PropertyVerbalizationType verbalizationType = getTypeByLinguisticalAnalysis(propertyText);
-    	
+
     	//if this failed use WordNet heuristic
     	if(verbalizationType == PropertyVerbalizationType.UNSPECIFIED){
     		logger.debug("...using WordNet based analysis...");
     		verbalizationType = getTypeByWordnet(propertyText);
     	}
-    	
+
     	PropertyVerbalization propertyVerbalization = new PropertyVerbalization(propertyURI, propertyText, verbalizationType);
-    	
+
     	//compute expanded form
     	computeExpandedVerbalization(propertyVerbalization);
-    	
+
     	logger.debug("Done.");
-    	
+
     	return propertyVerbalization;
     }
-    
+
     public PropertyVerbalizationType getTypeByWordnet(String property){
     	 //length is > 1
         if (property.contains(" ")) {
@@ -144,7 +144,7 @@ public class PropertyVerbalizer {
 			}
         }
     }
-    
+
     public void setThreshold(double threshold) {
 		this.threshold = threshold;
 	}
@@ -240,7 +240,7 @@ public class PropertyVerbalizer {
         }
         return word;
     }
-    
+
 	private PropertyVerbalizationType getTypeByLinguisticalAnalysis(String propertyText) {
 		logger.debug("...using linguistical analysis...");
 		Annotation document = new Annotation(propertyText);
@@ -255,12 +255,12 @@ public class PropertyVerbalizer {
 			String word = token.get(TextAnnotation.class);
 			String pos = token.get(PartOfSpeechAnnotation.class);
 			String lemma = token.getString(LemmaAnnotation.class);
-			
+
 			//if first token is an auxiliary can return verb
 			if(auxiliaryVerbs.contains(lemma)){
 				return PropertyVerbalizationType.VERB;
 			}
-			
+
 			if(lemma.equals("be") || word.equals("have")){
 				pattern += lemma;
 			} else {
@@ -293,7 +293,7 @@ public class PropertyVerbalizer {
 		      logger.debug("Parse tree:" + tree.pennString());
 		}
 		pattern = pattern.trim();
-		
+
 		//check if pattern matches
 		if(pattern.matches(VERB_PATTERN)){
 			logger.debug("...successfully determined type.");
@@ -303,56 +303,56 @@ public class PropertyVerbalizer {
 			return PropertyVerbalizationType.UNSPECIFIED;
 		}
 	}
-	
+
 	private String normalize(String propertyText){
 		//lower case
 		propertyText = propertyText.toLowerCase();
-		
+
 		return propertyText;
 	}
-	
+
 	private void computeExpandedVerbalization(PropertyVerbalization propertyVerbalization){
-		
+
 		String text = propertyVerbalization.getVerbalizationText();
 		String expandedForm = text;
-		
+
 		//get POS tag of property verbalization
 		String pos = getPOS(text);
-		
+
 		//VBN IN
 		if(pos.equals("VBN IN")){
 			expandedForm = "is" + " " + text;
 		}
-		
+
 		propertyVerbalization.setExpandedVerbalizationText(expandedForm);
 	}
-	
+
 	private String getPOS(String text){
 		Annotation document = new Annotation(text);
 		pipeline.annotate(document);
-		
+
 		//we assume to have only one sentence
 		CoreMap sentence = document.get(SentencesAnnotation.class).get(0);
-		
+
 		StringBuilder sb = new StringBuilder();
 		for (CoreLabel token : sentence.get(TokensAnnotation.class)) {
 			String word = token.get(TextAnnotation.class);
 			String pos = token.get(PartOfSpeechAnnotation.class);
 			String lemma = token.getString(LemmaAnnotation.class);
-			
+
 //			sb.append(word);
 //			sb.append('/');
 			sb.append(pos);
 			sb.append(" ");
 		}
-		
+
 		return sb.toString().trim();
 	}
 
 
     public static void main(String args[]) {
         PropertyVerbalizer pp = new PropertyVerbalizer(SparqlEndpoint.getEndpointDBpedia(), "ache", "resources/wordnet/dict");
-        
+
         String propertyURI = "http://dbpedia.org/ontology/birthPlace";
         System.out.println(pp.verbalize(propertyURI));
         

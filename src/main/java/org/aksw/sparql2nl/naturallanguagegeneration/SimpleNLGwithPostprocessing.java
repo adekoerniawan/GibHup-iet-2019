@@ -144,7 +144,7 @@ public class SimpleNLGwithPostprocessing implements Sparql2NLConverter {
 		this.wordnetDirectory = wordnetDirectory;
 		
 		qef = new QueryExecutionFactoryHttp(endpoint.getURL().toString(), endpoint.getDefaultGraphURIs());
-		CacheFrontend frontend = CacheUtilsH2.createCacheFrontend(cacheName, true, TimeUnit.DAYS.toMillis(30));
+		frontend = CacheUtilsH2.createCacheFrontend(frontend.toString(), true, TimeUnit.DAYS.toMillis(30));
 		qef = new QueryExecutionFactoryCacheEx(qef, frontend);
 		
 		this.qef = qef;
@@ -233,7 +233,7 @@ public class SimpleNLGwithPostprocessing implements Sparql2NLConverter {
 	 * Converts the representation of the query as Natural Language Element into
 	 * free text.
 	 *
-	 * @param query Input query
+	 * @param inputQuery Input query
 	 * @return Text representation
 	 */
 	@Override

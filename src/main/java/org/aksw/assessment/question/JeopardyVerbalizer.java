@@ -40,12 +40,10 @@ public class JeopardyVerbalizer extends Verbalizer {
 	private static final Logger logger = Logger.getLogger(JeopardyVerbalizer.class.getName());
     
 	public JeopardyVerbalizer(SparqlEndpoint endpoint, String cacheDirectory, String wordnetDirectory) {
-		super(endpoint, cacheDirectory, wordnetDirectory);
+		super(endpoint, wordnetDirectory);
 	}
     
-	public JeopardyVerbalizer(QueryExecutionFactory qef, String cacheDirectory, String wordnetDirectory) {
-		super(qef, wordnetDirectory);
-	}
+
     
      public Map<Individual, List<NLGElement>> verbalize(Set<Individual> individuals, NamedClass nc, double threshold, DatasetBasedGraphGenerator.Cooccurrence cooccurrence, HardeningFactory.HardeningType hType) {
         resource2Triples = new HashMap<Resource, Collection<Triple>>();

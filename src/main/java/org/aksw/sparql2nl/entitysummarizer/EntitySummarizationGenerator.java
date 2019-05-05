@@ -25,17 +25,17 @@ public class EntitySummarizationGenerator {
 	
 	private double propertyFrequencyThreshold;
 
-	public EntitySummarizationGenerator(SparqlEndpoint endpoint, File cacheDirectory, double propertyFrequencyThreshold) {
-		this.cacheDirectory  = cacheDirectory;
-		this.propertyFrequencyThreshold = propertyFrequencyThreshold;
-		
-		graphGenerator = new CachedDatasetBasedGraphGenerator(endpoint, cacheDirectory);
-	}
-	
-	public EntitySummarizationGenerator(QueryExecutionFactory qef, File cacheDirectory) {
-		this.cacheDirectory  = cacheDirectory;
-		graphGenerator = new CachedDatasetBasedGraphGenerator(qef, cacheDirectory);
-	}
+//	public EntitySummarizationGenerator(SparqlEndpoint endpoint, File cacheDirectory, double propertyFrequencyThreshold) {
+//		this.cacheDirectory  = cacheDirectory;
+//		this.propertyFrequencyThreshold = propertyFrequencyThreshold;
+//
+//		graphGenerator = new CachedDatasetBasedGraphGenerator(endpoint, cacheDirectory);
+//	}
+//
+//	public EntitySummarizationGenerator(QueryExecutionFactory qef, File cacheDirectory) {
+//		this.cacheDirectory  = cacheDirectory;
+//		graphGenerator = new CachedDatasetBasedGraphGenerator(qef, cacheDirectory);
+//	}
 	
 	public EntitySummarization generateEntitySummarization(Resource entity){
 		//determine the most specific class of the entity

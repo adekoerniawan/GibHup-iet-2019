@@ -7,7 +7,6 @@ package org.aksw.sparql2nl.entitysummarizer;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,6 +16,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import com.sun.istack.Nullable;
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -96,12 +97,12 @@ public class Verbalizer {
 
 	public Verbalizer(SparqlEndpoint endpoint, String wordnetDirectory)
 	{
-		this(endpoint,CacheUtilsH2.createCacheFrontend("byverbalizer", true, TimeUnit.DAYS.toMillis(30)),wordnetDirectory);
+		this(CacheUtilsH2.createCacheFrontend("byverbalizer", true, TimeUnit.DAYS.toMillis(30)),wordnetDirectory, endpoint);
 
 	}
 
-	public Verbalizer(QueryExecutionFactory qef, CacheFrontend frontend, String wordnetDirectory) {
-		qef = new QueryExecutionFactoryHttp(endpoint.getURL().toString(), endpoint.getDefaultGraphURIs());		
+	public Verbalizer(CacheFrontend frontend, String wordnetDirectory, @Nullable SparqlEndpoint endpoint) {
+		QueryExecutionFactory qef = new QueryExecutionFactoryHttp(endpoint.getURL().toString(), endpoint.getDefaultGraphURIs());
 		qef = new QueryExecutionFactoryCacheEx(qef, frontend);
 
 		nlg = new SimpleNLGwithPostprocessing(endpoint, frontend,wordnetDirectory);
@@ -117,6 +118,7 @@ public class Verbalizer {
 		gender = new TypeAwareGenderDetector(qef, new LexiconBasedGenderDetector());
 
 		graphGenerator = new CachedDatasetBasedGraphGenerator(endpoint, frontend);
+
 	}
 
 	/**
@@ -643,7 +645,7 @@ public class Verbalizer {
 		String cacheName = (String) options.valueOf("cache");
 
 		CacheFrontend frontend = CacheUtilsH2.createCacheFrontend(cacheName, true, TimeUnit.DAYS.toMillis(30));
-		Verbalizer v = new Verbalizer(qef, frontend,wordnetDirectory);
+		Verbalizer v = new Verbalizer(frontend,wordnetDirectory, null);
 
 		NamedClass cls = new NamedClass((URI)options.valueOf("c"));
 		Individual ind = new Individual(((URI)options.valueOf("i")).toString());
