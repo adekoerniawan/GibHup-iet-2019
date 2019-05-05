@@ -8,7 +8,7 @@ Travis: [![Build Status](https://travis-ci.org/BME-MIT-IET/GibHup-iet-2019.svg?b
 - Burus Endre
 - Gracza Dávid
 - Ramács Gábor
-- Vizi előd 
+- Vizi Előd 
 
 # Leírás
 
