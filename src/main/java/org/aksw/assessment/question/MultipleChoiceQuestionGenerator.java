@@ -5,7 +5,6 @@
 package org.aksw.assessment.question;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

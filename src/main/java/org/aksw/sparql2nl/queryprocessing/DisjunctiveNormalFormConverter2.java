@@ -38,7 +38,7 @@ public class DisjunctiveNormalFormConverter2 extends ElementVisitorBase {
 	
 	@Override
 	public void visit(ElementPathBlock el) {
-		
+		//this function required, but now doing nothing
 	}
 	
 	@Override

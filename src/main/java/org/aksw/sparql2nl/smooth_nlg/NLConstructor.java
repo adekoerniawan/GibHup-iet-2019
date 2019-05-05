@@ -153,12 +153,12 @@ public class NLConstructor {
         }
         
         
-    private NPPhraseSpec buildNP(Entity e,String s,int occurrence) {
-   
-        s = s.replace("?","");
+    private NPPhraseSpec buildNP(Entity e,String sentence,int occurrence) {
+
+        sentence = sentence.replace("?","");
         NPPhraseSpec np = nlg.createNounPhrase("it"); // not a good fallback!
         
-        if (s.replace("?","").equals(e.var)) { // s is primary variable
+        if (sentence.replace("?","").equals(e.var)) { // sentence is primary variable
             if (occurrence == 1) {
                 np = nlg.createNounPhrase("the",e.type);
             } 
@@ -167,7 +167,7 @@ public class NLConstructor {
             }
             occurrence++;
         } 
-        else if (cardbox.getSecondaryVars().contains(s)) { // s is secondary variable
+        else if (cardbox.getSecondaryVars().contains(sentence)) { // sentence is secondary variable
             for (Entity sec : cardbox.secondaries) {
                 if (sec.var.equals(s)) {
                     np = nlg.createNounPhrase("some",sec.type);

@@ -385,14 +385,15 @@ public class RESTService {
 	}
 	
 	private List<Integer> getRandomNumbers(int total, int groups){
+		int total_local = total;
 		Random rnd = new Random(123);
 		List<Integer> partitionSizes = new ArrayList<Integer>(groups);
 		for (int i = 0; i < groups - 1; i++) {
-			int number = rnd.nextInt(total-(groups - i)) + 1;
-			total -= number;
+			int number = rnd.nextInt(total_local-(groups - i)) + 1;
+			total_local -= number;
 			partitionSizes.add(number);
 		}
-		partitionSizes.add(groups-1, total);
+		partitionSizes.add(groups-1, total_local);
 		return partitionSizes;
 	}
 	

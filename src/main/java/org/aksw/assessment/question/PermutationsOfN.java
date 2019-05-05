@@ -9,12 +9,13 @@ import com.google.common.collect.Lists;
 public class PermutationsOfN {
 
   public static <T> List<List<T>> getSubsetsOfSizeN( List<T> set, int k ) {
-    if ( k > set.size() ) {
-      k = set.size();
+    int size_k = k;
+    if ( size_k > set.size() ) {
+      size_k = set.size();
     }
     List<List<T>> result = Lists.newArrayList();
-    List<T> subset = Lists.newArrayListWithCapacity( k );
-    for ( int i = 0; i < k; i++ ) {
+    List<T> subset = Lists.newArrayListWithCapacity( size_k );
+    for ( int i = 0; i < size_k; i++ ) {
       subset.add( null );
     }
     return processLargerSubsets( result, set, subset, 0, 0 );
