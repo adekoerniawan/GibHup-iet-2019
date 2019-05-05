@@ -2,12 +2,13 @@
 
 Travis: [![Build Status](https://travis-ci.org/BME-MIT-IET/GibHup-iet-2019.svg?branch=master)](https://travis-ci.org/BME-MIT-IET/GibHup-iet-2019)
 
-#Csapattagok:
+# Csapattagok:
 
-Burus Endre
-Gracza Dávid
-Ramács Gábor
-Vizi előd
+
+- Burus Endre
+- Gracza Dávid
+- Ramács Gábor
+- Vizi előd 
 
 # Leírás
 
