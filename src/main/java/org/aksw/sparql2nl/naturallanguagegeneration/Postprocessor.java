@@ -4,7 +4,6 @@ package org.aksw.sparql2nl.naturallanguagegeneration;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import simplenlg.aggregation.ForwardConjunctionReductionRule;
 import simplenlg.features.Feature;
 import simplenlg.features.NumberAgreement;
 import simplenlg.framework.*;
