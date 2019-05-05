@@ -5,7 +5,6 @@
 package org.aksw.assessment.question;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
