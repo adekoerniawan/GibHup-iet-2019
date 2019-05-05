@@ -205,14 +205,12 @@ public class TriplePatternExtractor extends ElementVisitorBase {
 		query.getQueryPattern().visit(this);
 		
 		//postprocessing: triplepattern in OPTIONAL clause
-		if(!ignoreOptionals){
-			if(query.isSelectType()){
-				for(Triple t : optionalTriplePattern){
-					if(!ListUtils.intersection(new ArrayList<Var>(VarUtils.getVars(t)), query.getProjectVars()).isEmpty()){
+		if(!ignoreOptionals && query.isSelectType()){
+				for(Triple t : optionalTriplePattern) {
+					if (!ListUtils.intersection(new ArrayList<Var>(VarUtils.getVars(t)), query.getProjectVars()).isEmpty()) {
 						triplePattern.add(t);
 					}
 				}
-			}
 		}
 		
 		return triplePattern;

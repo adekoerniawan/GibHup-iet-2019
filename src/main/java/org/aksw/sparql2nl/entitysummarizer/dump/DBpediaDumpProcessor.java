@@ -47,9 +47,6 @@ public class DBpediaDumpProcessor implements DumpProcessor {
     private static SparqlEndpoint ENDPOINT = SparqlEndpoint.getEndpointDBpedia();
     private static final Logger logger = Logger.getLogger(DBpediaDumpProcessor.class);
     private ExtractionDBCache cache = new ExtractionDBCache("cache");
-
-    public DBpediaDumpProcessor() {
-    }
     
 	public void filterOutInvalidQueries(String file) {
 		OutputStream os = null;

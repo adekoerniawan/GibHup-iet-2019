@@ -377,7 +377,8 @@ public class Verbalizer {
 		List<SPhraseSpec> phrases = new ArrayList<SPhraseSpec>();
 		phrases.addAll(triples);
 
-		int newSize = phrases.size(), oldSize = phrases.size() + 1;
+		int newSize = phrases.size();
+		int oldSize = phrases.size() + 1;
 
 		//apply merging rules if more than one sentence to merge
 		if (newSize > 1) {
