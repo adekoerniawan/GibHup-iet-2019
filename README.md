@@ -13,7 +13,7 @@ Travis: [![Build Status](https://travis-ci.org/BME-MIT-IET/GibHup-iet-2019.svg?b
 # Leírás
 
 
-SPARQL2NL - the SPARQL to natural language converter
+A projekt célja egy konverter megvalósítása a SPARQL nyelvről természetes nyelvre. Mint ismeretes, a SPARQL egy RDF lekérdező nyelv, mely segítségével könnyen adhatunk meg különféle adatbázisokban tárolt erőforrásokhoz lekérdezéseket. De ezek a lekérdezések általában emberi (főleg avatatlan) szem számára nehezen értelmezhetőek, ebben nyújt segítséget ez a projekt.
 
 # INSTALL
 
