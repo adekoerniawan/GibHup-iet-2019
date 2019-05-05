@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.dllearner:components-ext:1.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/dllearner/components-ext/1.0-SNAPSHOT/components-ext-1.0-20150209.200101-568.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/dllearner/components-ext/1.0-SNAPSHOT/components-ext-1.0-20150209.200101-568-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/dllearner/components-ext/1.0-SNAPSHOT/components-ext-1.0-20150209.200101-568-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
