@@ -743,7 +743,7 @@ public class Postprocessor {
         String prefix = "";
         int lf = 0;
         for (int i = 0; i < Math.min(real1.length,real2.length); i++) {
-             if (real1[i].toLowerCase().equals(real2[i].toLowerCase())) prefix += " " + real1[i];
+             if (real1[i].equalsIgnoreCase(real2[i])) prefix += " " + real1[i];
              else { lf = i; break; }
         } 
         prefix = prefix.trim();
