@@ -151,11 +151,11 @@ public class NLConstructor {
             }
             return np;
         }
-        
-        
-    private NPPhraseSpec buildNP(Entity e,String s,int occurrence) {
-   
-        s = s.replace("?","");
+
+
+    private NPPhraseSpec buildNP(Entity e,String string,int occurrence) {
+
+        String s = string.replace("?","");
         NPPhraseSpec np = nlg.createNounPhrase("it"); // not a good fallback!
         
         if (s.replace("?","").equals(e.var)) { // s is primary variable
