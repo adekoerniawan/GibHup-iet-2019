@@ -34,8 +34,8 @@ public class Evaluation {
     private static Logger logger = Logger.getLogger(Evaluation.class);
 
 
-    SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
-    ;
+    private SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
+
     String cacheDirectory = "verbalization-evaluation";
     int nrOfClasses = 10;
     int nrOfInstancePerClass = 10;
