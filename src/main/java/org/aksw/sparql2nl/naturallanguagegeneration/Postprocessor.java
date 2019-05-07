@@ -47,20 +47,7 @@ public class Postprocessor {
         lexicon = Lexicon.getDefaultLexicon();
         nlg = new NLGFactory(lexicon);
         realiser = new Realiser(lexicon);
-        selects = new ArrayList<NPPhraseSpec>();
-        primaries = new HashSet<String>();
-        secondaries = new HashSet<String>();
-        sentences = new HashSet<Sentence>();
-        unions = new HashSet<Union>();
-        filters = new HashSet<Filter>();
-        orderbylimit = new HashSet<Sentence>();
-        output = null;
-        additionaloutput = null;
-        id = 0;
-        hash = new HashMap<String, Set<Sentence>>();
-        equalities = new HashMap<String, String>();
-        ask = false;
-        relativeClause = false;
+        flush();
     }
 
     public void flush() {
