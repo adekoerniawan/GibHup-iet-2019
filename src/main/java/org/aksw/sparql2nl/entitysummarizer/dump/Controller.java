@@ -8,17 +8,17 @@ import com.google.common.collect.Multimap;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
-import java.util.*;
-import java.util.Map.Entry;
-
-import org.dllearner.core.owl.Property;
 import org.aksw.sparql2nl.entitysummarizer.SPARQLQueryProcessor;
 import org.aksw.sparql2nl.entitysummarizer.clustering.Node;
 import org.aksw.sparql2nl.entitysummarizer.clustering.WeightedGraph;
 import org.dllearner.core.owl.NamedClass;
+import org.dllearner.core.owl.Property;
 import org.dllearner.kb.SparqlEndpointKS;
 import org.dllearner.kb.sparql.SparqlEndpoint;
 import org.dllearner.reasoning.SPARQLReasoner;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  *

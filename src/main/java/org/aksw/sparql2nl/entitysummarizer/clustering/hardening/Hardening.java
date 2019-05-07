@@ -4,10 +4,11 @@
  */
 package org.aksw.sparql2nl.entitysummarizer.clustering.hardening;
 
-import java.util.List;
-import java.util.Set;
 import org.aksw.sparql2nl.entitysummarizer.clustering.Node;
 import org.aksw.sparql2nl.entitysummarizer.clustering.WeightedGraph;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  *

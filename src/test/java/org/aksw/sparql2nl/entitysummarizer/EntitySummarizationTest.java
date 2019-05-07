@@ -3,24 +3,19 @@
  */
 package org.aksw.sparql2nl.entitysummarizer;
 
-import static org.junit.Assert.*;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Map.Entry;
-
+import com.google.common.base.Charsets;
+import com.google.common.collect.Multimap;
+import com.google.common.io.Files;
 import org.aksw.sparql2nl.entitysummarizer.dump.DBpediaDumpProcessor;
 import org.aksw.sparql2nl.entitysummarizer.dump.DumpProcessor;
 import org.aksw.sparql2nl.entitysummarizer.dump.LogEntry;
 import org.aksw.sparql2nl.entitysummarizer.dump.LogEntryGrouping;
 import org.dllearner.kb.sparql.SparqlEndpoint;
-import org.junit.Before;
-import org.junit.Test;
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.Multimap;
-import com.google.common.io.Files;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Map.Entry;
 
 /**
  * @author Lorenz Buehmann

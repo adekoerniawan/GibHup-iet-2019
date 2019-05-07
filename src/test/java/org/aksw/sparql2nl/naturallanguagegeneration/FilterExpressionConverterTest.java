@@ -3,24 +3,15 @@
  */
 package org.aksw.sparql2nl.naturallanguagegeneration;
 
-import java.util.Calendar;
-
+import com.hp.hpl.jena.sparql.expr.*;
 import org.dllearner.kb.sparql.SparqlEndpoint;
 import org.junit.Assert;
 import org.junit.Test;
-
 import simplenlg.framework.NLGElement;
 import simplenlg.lexicon.Lexicon;
 import simplenlg.realiser.english.Realiser;
 
-import com.hp.hpl.jena.sparql.expr.E_Equals;
-import com.hp.hpl.jena.sparql.expr.E_GreaterThan;
-import com.hp.hpl.jena.sparql.expr.E_GreaterThanOrEqual;
-import com.hp.hpl.jena.sparql.expr.E_LessThan;
-import com.hp.hpl.jena.sparql.expr.E_LessThanOrEqual;
-import com.hp.hpl.jena.sparql.expr.Expr;
-import com.hp.hpl.jena.sparql.expr.ExprVar;
-import com.hp.hpl.jena.sparql.expr.NodeValue;
+import java.util.Calendar;
 
 /**
  * @author Lorenz Buehmann

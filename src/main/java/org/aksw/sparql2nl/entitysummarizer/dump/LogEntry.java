@@ -6,9 +6,9 @@ package org.aksw.sparql2nl.entitysummarizer.dump;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
-import java.util.Date;
-
 import org.apache.commons.lang.builder.CompareToBuilder;
+
+import java.util.Date;
 
 /**
  *

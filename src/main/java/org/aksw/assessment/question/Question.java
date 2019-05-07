@@ -4,8 +4,9 @@
  */
 package org.aksw.assessment.question;
 
-import org.aksw.assessment.question.answer.Answer;
 import com.hp.hpl.jena.query.Query;
+import org.aksw.assessment.question.answer.Answer;
+
 import java.util.List;
 
 /**

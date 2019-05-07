@@ -5,6 +5,7 @@
 package org.aksw.assessment.question;
 
 import com.hp.hpl.jena.graph.Triple;
+
 import java.util.Map;
 import java.util.Set;
 

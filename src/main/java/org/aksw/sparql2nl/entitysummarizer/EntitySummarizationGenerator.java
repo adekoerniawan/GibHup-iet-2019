@@ -3,16 +3,12 @@
  */
 package org.aksw.sparql2nl.entitysummarizer;
 
-import java.io.File;
-
-import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
+import com.hp.hpl.jena.rdf.model.Resource;
 import org.aksw.sparql2nl.entitysummarizer.clustering.WeightedGraph;
-import org.aksw.sparql2nl.entitysummarizer.dataset.CachedDatasetBasedGraphGenerator;
 import org.aksw.sparql2nl.entitysummarizer.dataset.DatasetBasedGraphGenerator;
 import org.dllearner.core.owl.NamedClass;
-import org.dllearner.kb.sparql.SparqlEndpoint;
 
-import com.hp.hpl.jena.rdf.model.Resource;
+import java.io.File;
 
 /**
  * @author Lorenz Buehmann

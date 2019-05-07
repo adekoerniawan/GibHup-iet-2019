@@ -4,9 +4,10 @@
  */
 package org.aksw.sparql2nl.entitysummarizer.clustering.hardening;
 
-import java.util.Set;
 import org.aksw.sparql2nl.entitysummarizer.clustering.Node;
 import org.aksw.sparql2nl.entitysummarizer.clustering.WeightedGraph;
+
+import java.util.Set;
 
 /**
  * Harderning that prefers clusters with higher average weight

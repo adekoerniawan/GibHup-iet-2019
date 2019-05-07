@@ -3,15 +3,14 @@
  */
 package org.aksw.assessment.question.informativeness;
 
-import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
-import org.aksw.jena_sparql_api.http.QueryExecutionFactoryHttp;
-import org.dllearner.kb.sparql.SparqlEndpoint;
-
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.ParameterizedSparqlString;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.ResultSet;
+import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
+import org.aksw.jena_sparql_api.http.QueryExecutionFactoryHttp;
+import org.dllearner.kb.sparql.SparqlEndpoint;
 
 /**
  * Computes the informativeness of a given triple by executing two SPARQL queries to get the number of incoming and outgoing links.

@@ -3,10 +3,10 @@
  */
 package org.aksw.sparql2nl.entitysummarizer;
 
-import java.util.Set;
-
 import org.dllearner.core.owl.NamedClass;
 import org.dllearner.core.owl.Property;
+
+import java.util.Set;
 
 /**
  * This class basically represents a summarization of a class by containing a set of properties which

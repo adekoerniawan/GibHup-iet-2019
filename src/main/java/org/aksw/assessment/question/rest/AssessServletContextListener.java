@@ -3,10 +3,10 @@
  */
 package org.aksw.assessment.question.rest;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import org.apache.log4j.Logger;
 
 /**
  * @author Lorenz Buehmann

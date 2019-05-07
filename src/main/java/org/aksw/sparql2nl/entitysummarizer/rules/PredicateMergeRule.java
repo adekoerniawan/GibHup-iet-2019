@@ -6,14 +6,15 @@ package org.aksw.sparql2nl.entitysummarizer.rules;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.TreeMultimap;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import simplenlg.framework.CoordinatedPhraseElement;
 import simplenlg.framework.NLGFactory;
 import simplenlg.lexicon.Lexicon;
 import simplenlg.phrasespec.SPhraseSpec;
 import simplenlg.realiser.english.Realiser;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Fuses sentences s1 p1 o1 and s2 p2 o1 to s1 (p1 and p2) o1

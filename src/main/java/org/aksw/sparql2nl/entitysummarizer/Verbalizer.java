@@ -4,19 +4,16 @@
  */
 package org.aksw.sparql2nl.entitysummarizer;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
+import com.hp.hpl.jena.vocabulary.RDF;
 import com.sun.istack.Nullable;
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
@@ -37,11 +34,7 @@ import org.aksw.sparql2nl.entitysummarizer.dataset.DatasetBasedGraphGenerator.Co
 import org.aksw.sparql2nl.entitysummarizer.gender.Gender;
 import org.aksw.sparql2nl.entitysummarizer.gender.LexiconBasedGenderDetector;
 import org.aksw.sparql2nl.entitysummarizer.gender.TypeAwareGenderDetector;
-import org.aksw.sparql2nl.entitysummarizer.rules.DateLiteralFilter;
-import org.aksw.sparql2nl.entitysummarizer.rules.NumericLiteralFilter;
-import org.aksw.sparql2nl.entitysummarizer.rules.ObjectMergeRule;
-import org.aksw.sparql2nl.entitysummarizer.rules.PredicateMergeRule;
-import org.aksw.sparql2nl.entitysummarizer.rules.SubjectMergeRule;
+import org.aksw.sparql2nl.entitysummarizer.rules.*;
 import org.aksw.sparql2nl.naturallanguagegeneration.SimpleNLGwithPostprocessing;
 import org.apache.log4j.Logger;
 import org.dllearner.core.owl.Individual;
@@ -57,16 +50,13 @@ import simplenlg.framework.NLGElement;
 import simplenlg.phrasespec.NPPhraseSpec;
 import simplenlg.phrasespec.SPhraseSpec;
 import simplenlg.realiser.english.Realiser;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.hp.hpl.jena.graph.Triple;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import com.hp.hpl.jena.vocabulary.RDF;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A verbalizer for triples without variables.

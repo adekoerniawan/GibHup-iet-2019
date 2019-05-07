@@ -1,16 +1,14 @@
 package org.aksw.sparql2nl.naturallanguagegeneration;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.Arrays;
-
 import net.didion.jwnl.JWNL;
 import net.didion.jwnl.JWNLException;
 import net.didion.jwnl.data.IndexWord;
 import net.didion.jwnl.data.POS;
 import net.didion.jwnl.data.Synset;
-import net.didion.jwnl.data.Word;
 import net.didion.jwnl.dictionary.Dictionary;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class WordTypeDetector {
 	

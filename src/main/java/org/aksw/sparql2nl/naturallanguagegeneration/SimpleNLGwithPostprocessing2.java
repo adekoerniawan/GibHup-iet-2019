@@ -1,36 +1,5 @@
 package org.aksw.sparql2nl.naturallanguagegeneration;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
-
-import org.aksw.sparql2nl.naturallanguagegeneration.PropertyProcessor.Type;
-import org.aksw.sparql2nl.nlp.relation.BoaPatternSelector;
-import org.aksw.sparql2nl.nlp.stemming.PlingStemmer;
-import org.aksw.sparql2nl.queryprocessing.DisjunctiveNormalFormConverter;
-import org.aksw.sparql2nl.queryprocessing.GenericType;
-import org.aksw.sparql2nl.queryprocessing.TypeExtractor;
-import org.dllearner.kb.sparql.SparqlEndpoint;
-
-import simplenlg.features.Feature;
-import simplenlg.features.Tense;
-import simplenlg.framework.CoordinatedPhraseElement;
-import simplenlg.framework.DocumentElement;
-import simplenlg.framework.LexicalCategory;
-import simplenlg.framework.NLGElement;
-import simplenlg.framework.NLGFactory;
-import simplenlg.lexicon.Lexicon;
-import simplenlg.phrasespec.NPPhraseSpec;
-import simplenlg.phrasespec.SPhraseSpec;
-import simplenlg.phrasespec.VPPhraseSpec;
-import simplenlg.realiser.english.Realiser;
-
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.graph.impl.LiteralLabel;
@@ -43,22 +12,30 @@ import com.hp.hpl.jena.sparql.core.Var;
 import com.hp.hpl.jena.sparql.expr.Expr;
 import com.hp.hpl.jena.sparql.expr.ExprAggregator;
 import com.hp.hpl.jena.sparql.expr.ExprVar;
-import com.hp.hpl.jena.sparql.expr.aggregate.AggAvg;
-import com.hp.hpl.jena.sparql.expr.aggregate.AggCountVar;
-import com.hp.hpl.jena.sparql.expr.aggregate.AggMax;
-import com.hp.hpl.jena.sparql.expr.aggregate.AggMin;
-import com.hp.hpl.jena.sparql.expr.aggregate.AggSum;
-import com.hp.hpl.jena.sparql.expr.aggregate.Aggregator;
-import com.hp.hpl.jena.sparql.syntax.Element;
-import com.hp.hpl.jena.sparql.syntax.ElementFilter;
-import com.hp.hpl.jena.sparql.syntax.ElementGroup;
-import com.hp.hpl.jena.sparql.syntax.ElementOptional;
-import com.hp.hpl.jena.sparql.syntax.ElementPathBlock;
-import com.hp.hpl.jena.sparql.syntax.ElementUnion;
-import com.hp.hpl.jena.sparql.syntax.PatternVars;
+import com.hp.hpl.jena.sparql.expr.aggregate.*;
+import com.hp.hpl.jena.sparql.syntax.*;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
+import org.aksw.sparql2nl.naturallanguagegeneration.PropertyProcessor.Type;
+import org.aksw.sparql2nl.nlp.relation.BoaPatternSelector;
+import org.aksw.sparql2nl.nlp.stemming.PlingStemmer;
+import org.aksw.sparql2nl.queryprocessing.DisjunctiveNormalFormConverter;
+import org.aksw.sparql2nl.queryprocessing.GenericType;
+import org.aksw.sparql2nl.queryprocessing.TypeExtractor;
+import org.dllearner.kb.sparql.SparqlEndpoint;
+import simplenlg.features.Feature;
+import simplenlg.features.Tense;
+import simplenlg.framework.*;
+import simplenlg.lexicon.Lexicon;
+import simplenlg.phrasespec.NPPhraseSpec;
+import simplenlg.phrasespec.SPhraseSpec;
+import simplenlg.phrasespec.VPPhraseSpec;
+import simplenlg.realiser.english.Realiser;
+
+import java.net.URL;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  *

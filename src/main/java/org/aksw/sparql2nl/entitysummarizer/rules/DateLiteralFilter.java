@@ -3,19 +3,18 @@
  */
 package org.aksw.sparql2nl.entitysummarizer.rules;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.aksw.sparql2nl.naturallanguagegeneration.LiteralConverter;
-import org.apache.log4j.Logger;
-
 import com.google.common.collect.Lists;
 import com.hp.hpl.jena.datatypes.RDFDatatype;
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.graph.impl.LiteralLabel;
+import org.aksw.sparql2nl.naturallanguagegeneration.LiteralConverter;
+import org.apache.log4j.Logger;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Returns only canonical forms of numeric literals, e.g. for 800 cm and 8.00m the digits are the same.

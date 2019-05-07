@@ -9,13 +9,12 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.sparql.syntax.Element;
 import com.hp.hpl.jena.sparql.syntax.ElementGroup;
 import com.hp.hpl.jena.sparql.syntax.ElementOptional;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.dllearner.kb.sparql.SparqlEndpoint;
 import simplenlg.framework.DocumentElement;
-
 import simplenlg.framework.NLGElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *

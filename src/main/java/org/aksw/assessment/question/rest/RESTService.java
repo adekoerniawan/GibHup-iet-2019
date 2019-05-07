@@ -3,42 +3,9 @@
  */
 package org.aksw.assessment.question.rest;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import javax.servlet.ServletContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import org.aksw.assessment.question.BlackList;
-import org.aksw.assessment.question.DBpediaPropertyBlackList;
-import org.aksw.assessment.question.JeopardyQuestionGenerator;
-import org.aksw.assessment.question.MultipleChoiceQuestionGenerator;
-import org.aksw.assessment.question.Question;
-import org.aksw.assessment.question.QuestionGenerator;
-import org.aksw.assessment.question.QuestionType;
-import org.aksw.assessment.question.TrueFalseQuestionGenerator;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import org.aksw.assessment.question.*;
 import org.aksw.assessment.question.answer.Answer;
 import org.aksw.jena_sparql_api.cache.core.QueryExecutionFactoryCacheEx;
 import org.aksw.jena_sparql_api.cache.extra.CacheFrontend;
@@ -59,9 +26,16 @@ import org.dllearner.core.owl.NamedClass;
 import org.dllearner.core.owl.ObjectProperty;
 import org.dllearner.kb.sparql.SparqlEndpoint;
 import org.dllearner.reasoning.SPARQLReasoner;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.google.common.util.concurrent.MoreExecutors;
+
+import javax.servlet.ServletContext;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.*;
 
 /**
  * @author Lorenz Buehmann

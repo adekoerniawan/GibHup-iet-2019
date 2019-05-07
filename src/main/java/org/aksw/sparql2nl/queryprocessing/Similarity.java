@@ -6,7 +6,9 @@ package org.aksw.sparql2nl.queryprocessing;
 
 import org.aksw.sparql2nl.similarity.NormedGraphIsomorphism;
 import org.aksw.sparql2nl.similarity.TypeAwareGraphIsomorphism;
-import uk.ac.shef.wit.simmetrics.similaritymetrics.*;
+import uk.ac.shef.wit.simmetrics.similaritymetrics.JaccardSimilarity;
+import uk.ac.shef.wit.simmetrics.similaritymetrics.Levenshtein;
+import uk.ac.shef.wit.simmetrics.similaritymetrics.QGramsDistance;
 
 /**
  * Computes the similarity between two queries

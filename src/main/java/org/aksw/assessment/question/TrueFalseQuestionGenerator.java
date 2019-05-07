@@ -4,20 +4,6 @@
  */
 package org.aksw.assessment.question;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.aksw.assessment.question.answer.Answer;
-import org.aksw.assessment.question.answer.SimpleAnswer;
-import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
-import org.apache.log4j.Logger;
-import org.dllearner.core.owl.NamedClass;
-import org.dllearner.core.owl.ObjectProperty;
-import org.dllearner.kb.sparql.SparqlEndpoint;
-
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.hp.hpl.jena.graph.Triple;
@@ -26,7 +12,18 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
+import org.aksw.assessment.question.answer.Answer;
+import org.aksw.assessment.question.answer.SimpleAnswer;
+import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
+import org.apache.log4j.Logger;
+import org.dllearner.core.owl.NamedClass;
+import org.dllearner.core.owl.ObjectProperty;
+import org.dllearner.kb.sparql.SparqlEndpoint;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *

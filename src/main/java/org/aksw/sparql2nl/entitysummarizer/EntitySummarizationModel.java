@@ -3,9 +3,9 @@
  */
 package org.aksw.sparql2nl.entitysummarizer;
 
-import java.util.Set;
-
 import com.google.common.base.Joiner;
+
+import java.util.Set;
 
 /**
  * This class represents a entity summarization model for a given knowledge base, i.e. it contains

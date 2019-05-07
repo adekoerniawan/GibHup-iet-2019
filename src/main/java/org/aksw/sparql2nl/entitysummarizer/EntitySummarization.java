@@ -3,11 +3,11 @@
  */
 package org.aksw.sparql2nl.entitysummarizer;
 
-import java.util.List;
-
 import com.google.common.base.Joiner;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.rdf.model.Resource;
+
+import java.util.List;
 
 /**
  * @author Lorenz Buehmann

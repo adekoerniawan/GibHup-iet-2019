@@ -3,11 +3,11 @@
  */
 package org.aksw.sparql2nl.entitysummarizer.dump;
 
-import java.util.Collection;
-import java.util.Date;
-
 import com.google.common.collect.Multimap;
 import com.google.common.collect.TreeMultimap;
+
+import java.util.Collection;
+import java.util.Date;
 
 /**
  * @author Lorenz Buehmann

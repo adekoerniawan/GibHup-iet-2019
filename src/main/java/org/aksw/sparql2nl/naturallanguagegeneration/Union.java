@@ -1,10 +1,10 @@
 
 package org.aksw.sparql2nl.naturallanguagegeneration;
 
+import simplenlg.realiser.english.Realiser;
+
 import java.util.Hashtable;
 import java.util.Set;
-import simplenlg.phrasespec.SPhraseSpec;
-import simplenlg.realiser.english.Realiser;
 
 public class Union {
     

@@ -4,33 +4,6 @@
  */
 package org.aksw.assessment.question;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.Map.Entry;
-import java.util.regex.Pattern;
-
-import org.aksw.assessment.question.answer.Answer;
-import org.aksw.assessment.question.answer.SimpleAnswer;
-import org.aksw.assessment.question.rest.RESTService;
-import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
-import org.aksw.sparqltools.util.SPARQLQueryUtils;
-import org.apache.jena.atlas.iterator.Iter;
-import org.apache.log4j.Logger;
-import org.dllearner.core.owl.NamedClass;
-import org.dllearner.core.owl.ObjectProperty;
-import org.dllearner.kb.sparql.SparqlEndpoint;
-
-import simplenlg.framework.NLGElement;
-
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -41,6 +14,20 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Resource;
+import org.aksw.assessment.question.answer.Answer;
+import org.aksw.assessment.question.answer.SimpleAnswer;
+import org.aksw.assessment.question.rest.RESTService;
+import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
+import org.aksw.sparqltools.util.SPARQLQueryUtils;
+import org.apache.log4j.Logger;
+import org.dllearner.core.owl.NamedClass;
+import org.dllearner.core.owl.ObjectProperty;
+import org.dllearner.kb.sparql.SparqlEndpoint;
+import simplenlg.framework.NLGElement;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 /**
  *

@@ -3,8 +3,10 @@
  * and open the template in the editor.
  */
 package org.aksw.sparql2nl.entitysummarizer.statistics;
-import java.util.Map;
+
 import org.aksw.sparql2nl.entitysummarizer.clustering.Node;
+
+import java.util.Map;
 /**
  *
  * @author ngonga

@@ -4,8 +4,6 @@
  */
 package org.aksw.assessment.question.answer;
 
-import org.aksw.assessment.question.answer.Answer;
-
 /**
  *
  * @author ngonga

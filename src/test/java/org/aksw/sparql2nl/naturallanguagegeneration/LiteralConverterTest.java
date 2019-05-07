@@ -3,14 +3,11 @@
  */
 package org.aksw.sparql2nl.naturallanguagegeneration;
 
-import static org.junit.Assert.*;
-
-import org.dllearner.kb.sparql.SparqlEndpoint;
-import org.junit.Test;
-
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.graph.NodeFactory;
 import com.hp.hpl.jena.graph.impl.LiteralLabel;
+import org.dllearner.kb.sparql.SparqlEndpoint;
+import org.junit.Test;
 
 /**
  * @author Lorenz Buehmann

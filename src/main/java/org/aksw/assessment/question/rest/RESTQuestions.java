@@ -3,11 +3,10 @@
  */
 package org.aksw.assessment.question.rest;
 
-import java.util.List;
+import com.google.common.base.Joiner;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
-import com.google.common.base.Joiner;
+import java.util.List;
 
 /**
  * @author Lorenz Buehmann

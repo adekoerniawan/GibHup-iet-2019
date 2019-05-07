@@ -3,25 +3,17 @@
  */
 package org.aksw.sparql2nl.naturallanguagegeneration;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
-import java.net.URLConnection;
-
+import com.google.common.net.UrlEscapers;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFLanguages;
 import org.apache.jena.riot.WebContent;
 import org.apache.log4j.Logger;
 
-import com.google.common.net.UrlEscapers;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import java.io.*;
+import java.net.URI;
+import java.net.URLConnection;
 
 /**
  * Class to retrieve triples based on the Linked Data dereferencing paradigm.

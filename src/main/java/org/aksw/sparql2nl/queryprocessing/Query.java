@@ -4,13 +4,14 @@
  */
 package org.aksw.sparql2nl.queryprocessing;
 
-import java.util.HashMap;
-import java.util.TreeSet;
-import java.util.regex.Pattern;
 import org.aksw.sparql2nl.queryprocessing.Similarity.SimilarityMeasure;
 import simpack.accessor.graph.SimpleGraphAccessor;
 import simpack.api.IGraphNode;
 import simpack.util.graph.GraphNode;
+
+import java.util.HashMap;
+import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 /**
  * Processes a SPARQL query and stores information such as 

@@ -22,30 +22,21 @@
  */
 package org.aksw.sparql2nl.naturallanguagegeneration;
 
-import java.util.Iterator;
-import java.util.Set;
-
-import org.aksw.sparql2nl.queryprocessing.TriplePatternExtractor;
-import org.aksw.sparql2nl.naturallanguagegeneration.property.PropertyVerbalizer;
-import org.apache.log4j.Logger;
-
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.NodeFactory;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.sparql.core.TriplePath;
-import com.hp.hpl.jena.sparql.expr.Expr;
-import com.hp.hpl.jena.sparql.expr.ExprAggregator;
-import com.hp.hpl.jena.sparql.expr.ExprFunction;
-import com.hp.hpl.jena.sparql.expr.ExprFunction2;
-import com.hp.hpl.jena.sparql.expr.ExprVar;
+import com.hp.hpl.jena.sparql.expr.*;
 import com.hp.hpl.jena.sparql.expr.aggregate.Aggregator;
-import com.hp.hpl.jena.sparql.syntax.Element;
-import com.hp.hpl.jena.sparql.syntax.ElementFilter;
-import com.hp.hpl.jena.sparql.syntax.ElementGroup;
-import com.hp.hpl.jena.sparql.syntax.ElementPathBlock;
-import com.hp.hpl.jena.sparql.syntax.ElementTriplesBlock;
+import com.hp.hpl.jena.sparql.syntax.*;
+import org.aksw.sparql2nl.naturallanguagegeneration.property.PropertyVerbalizer;
+import org.aksw.sparql2nl.queryprocessing.TriplePatternExtractor;
+import org.apache.log4j.Logger;
+
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author Lorenz Buehmann

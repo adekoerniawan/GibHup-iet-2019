@@ -3,20 +3,20 @@
  */
 package org.aksw.sparql2nl.entitysummarizer.rules;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map.Entry;
-import java.util.Set;
-import org.aksw.commons.util.Pair;
-import org.aksw.jena_sparql_api.cache.extra.CacheFrontend;
-import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
-import org.aksw.sparql2nl.naturallanguagegeneration.URIConverter;
-import org.dllearner.kb.sparql.SparqlEndpoint;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.graph.impl.LiteralLabel;
+import org.aksw.commons.util.Pair;
+import org.aksw.jena_sparql_api.cache.extra.CacheFrontend;
+import org.aksw.sparql2nl.naturallanguagegeneration.URIConverter;
+import org.dllearner.kb.sparql.SparqlEndpoint;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Returns only canonical forms of numeric literals, e.g. for 800 cm and 8.00m the digits are the same.

@@ -4,10 +4,10 @@
  */
 package org.aksw.sparql2nl.entitysummarizer.clustering;
 
+import org.apache.log4j.Logger;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
 
 /**
  *

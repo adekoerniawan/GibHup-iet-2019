@@ -3,6 +3,21 @@
  */
 package org.aksw.sparql2nl.rest;
 
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
+import org.aksw.sparql2nl.naturallanguagegeneration.TripleConverter;
+import org.apache.jena.riot.Lang;
+import org.apache.log4j.Logger;
+import org.dllearner.kb.sparql.SparqlEndpoint;
+import simplenlg.lexicon.Lexicon;
+
+import javax.servlet.ServletContext;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -11,29 +26,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.servlet.ServletContext;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-
-import org.aksw.sparql2nl.naturallanguagegeneration.TripleConverter;
-import org.apache.jena.riot.Lang;
-import org.apache.log4j.Logger;
-import org.dllearner.kb.sparql.SparqlEndpoint;
-
-import simplenlg.lexicon.Lexicon;
-
-import com.hp.hpl.jena.graph.Triple;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 /**
  * @author Lorenz Buehmann

@@ -3,10 +3,10 @@
  */
 package org.aksw.assessment.question;
 
-import java.util.Set;
-
 import com.google.common.collect.Sets;
 import com.hp.hpl.jena.rdf.model.Resource;
+
+import java.util.Set;
 
 /**
  * This class contains basically a set of defined properties that are meaningless for the generation of questions

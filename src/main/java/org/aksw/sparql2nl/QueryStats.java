@@ -1,23 +1,19 @@
 package org.aksw.sparql2nl;
 
-import java.io.OutputStreamWriter;
-import java.util.Set;
-
-import javax.xml.transform.TransformerConfigurationException;
-
-import org.aksw.sparql2nl.queryprocessing.TriplePatternExtractor;
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.alg.FloydWarshallShortestPaths;
-import org.jgrapht.ext.GraphMLExporter;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
-import org.xml.sax.SAXException;
-
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.Syntax;
+import org.aksw.sparql2nl.queryprocessing.TriplePatternExtractor;
+import org.jgrapht.DirectedGraph;
+import org.jgrapht.alg.FloydWarshallShortestPaths;
+import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
+import org.xml.sax.SAXException;
+
+import javax.xml.transform.TransformerConfigurationException;
+import java.util.Set;
 
 /**
  * 

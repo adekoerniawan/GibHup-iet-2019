@@ -1,9 +1,6 @@
 
 package org.aksw.sparql2nl.naturallanguagegeneration;
 
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import simplenlg.features.Feature;
 import simplenlg.features.NumberAgreement;
 import simplenlg.framework.*;
@@ -11,6 +8,10 @@ import simplenlg.lexicon.Lexicon;
 import simplenlg.phrasespec.NPPhraseSpec;
 import simplenlg.phrasespec.SPhraseSpec;
 import simplenlg.realiser.english.Realiser;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *

@@ -1,17 +1,12 @@
 package org.aksw.sparql2nl.queryprocessing;
 
-import java.util.Iterator;
-import java.util.Stack;
-
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.Syntax;
-import com.hp.hpl.jena.sparql.syntax.Element;
-import com.hp.hpl.jena.sparql.syntax.ElementGroup;
-import com.hp.hpl.jena.sparql.syntax.ElementOptional;
-import com.hp.hpl.jena.sparql.syntax.ElementPathBlock;
-import com.hp.hpl.jena.sparql.syntax.ElementUnion;
-import com.hp.hpl.jena.sparql.syntax.ElementVisitorBase;
+import com.hp.hpl.jena.sparql.syntax.*;
+
+import java.util.Iterator;
+import java.util.Stack;
 
 public class DisjunctiveNormalFormConverter2 extends ElementVisitorBase {
 	

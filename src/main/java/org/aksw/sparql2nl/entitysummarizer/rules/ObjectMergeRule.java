@@ -4,30 +4,23 @@
  */
 package org.aksw.sparql2nl.entitysummarizer.rules;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import com.google.common.collect.Multimap;
+import com.google.common.collect.TreeMultimap;
+import com.hp.hpl.jena.graph.NodeFactory;
+import com.hp.hpl.jena.graph.Triple;
 import org.aksw.sparql2nl.naturallanguagegeneration.SimpleNLGwithPostprocessing;
 import org.aksw.sparql2nl.nlp.stemming.PlingStemmer;
 import org.dllearner.kb.sparql.SparqlEndpoint;
-
 import simplenlg.features.Feature;
-import simplenlg.framework.CoordinatedPhraseElement;
-import simplenlg.framework.ElementCategory;
-import simplenlg.framework.LexicalCategory;
-import simplenlg.framework.NLGElement;
-import simplenlg.framework.NLGFactory;
-import simplenlg.framework.PhraseCategory;
+import simplenlg.framework.*;
 import simplenlg.lexicon.Lexicon;
 import simplenlg.phrasespec.NPPhraseSpec;
 import simplenlg.phrasespec.SPhraseSpec;
 import simplenlg.realiser.english.Realiser;
 
-import com.google.common.collect.Multimap;
-import com.google.common.collect.TreeMultimap;
-import com.hp.hpl.jena.graph.NodeFactory;
-import com.hp.hpl.jena.graph.Triple;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  *

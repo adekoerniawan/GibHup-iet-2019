@@ -1,13 +1,5 @@
 package org.aksw.sparql2nl.naturallanguagegeneration;
 
-import java.text.DateFormat;
-import java.text.DateFormatSymbols;
-import java.util.Calendar;
-import java.util.Locale;
-
-import org.apache.log4j.Logger;
-import org.dllearner.kb.sparql.SparqlEndpoint;
-
 import com.hp.hpl.jena.datatypes.DatatypeFormatException;
 import com.hp.hpl.jena.datatypes.RDFDatatype;
 import com.hp.hpl.jena.datatypes.xsd.IllegalDateTimeFieldException;
@@ -16,6 +8,13 @@ import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
 import com.hp.hpl.jena.graph.NodeFactory;
 import com.hp.hpl.jena.graph.impl.LiteralLabel;
 import com.hp.hpl.jena.rdf.model.Literal;
+import org.apache.log4j.Logger;
+import org.dllearner.kb.sparql.SparqlEndpoint;
+
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class LiteralConverter {
 

@@ -4,12 +4,9 @@
  */
 package org.aksw.sparql2nl.entitysummarizer.rules;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import com.google.common.collect.Multimap;
+import com.google.common.collect.TreeMultimap;
 import org.aksw.sparql2nl.entitysummarizer.gender.Gender;
-
 import simplenlg.features.Feature;
 import simplenlg.framework.CoordinatedPhraseElement;
 import simplenlg.framework.NLGElement;
@@ -19,8 +16,9 @@ import simplenlg.phrasespec.NPPhraseSpec;
 import simplenlg.phrasespec.SPhraseSpec;
 import simplenlg.realiser.english.Realiser;
 
-import com.google.common.collect.Multimap;
-import com.google.common.collect.TreeMultimap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  *
