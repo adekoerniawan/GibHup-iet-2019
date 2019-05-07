@@ -10,18 +10,17 @@ import org.aksw.assessment.question.answer.Answer;
 import java.util.List;
 
 /**
- *
  * @author ngonga
  */
 public class SimpleQuestion implements Question {
     String text;
     List<Answer> correctAnswers;
-    List<Answer> wrongAnswers;    
+    List<Answer> wrongAnswers;
     int difficulty;
     Query query;
     QuestionType type;
-    public SimpleQuestion(String text, List<Answer> correctAnswers, List<Answer> wrongAnswers, int difficulty, Query q, QuestionType type)
-    {
+
+    public SimpleQuestion(String text, List<Answer> correctAnswers, List<Answer> wrongAnswers, int difficulty, Query q, QuestionType type) {
         this.text = text;
         this.correctAnswers = correctAnswers;
         this.wrongAnswers = wrongAnswers;
@@ -29,30 +28,28 @@ public class SimpleQuestion implements Question {
         this.query = q;
         this.type = type;
     }
-    
+
     public String getText() {
         return text;
     }
-    
-    public QuestionType getType()
-    {
+
+    public QuestionType getType() {
         return type;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return text;
     }
-    
+
     public List<Answer> getCorrectAnswers() {
         return correctAnswers;
     }
-    
+
     public List<Answer> getWrongAnswers() {
         return wrongAnswers;
     }
-    
+
     public int getDifficulty() {
         return difficulty;
     }
@@ -60,5 +57,5 @@ public class SimpleQuestion implements Question {
     public Query getQuery() {
         return query;
     }
-    
+
 }

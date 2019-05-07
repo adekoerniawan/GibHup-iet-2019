@@ -23,21 +23,91 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- *
  * @author ngonga
  */
 public class ObjectMergeRule implements Rule {
 
-   
-	Lexicon lexicon;
+
+    Lexicon lexicon;
     NLGFactory nlgFactory;
     Realiser realiser;
 
     public ObjectMergeRule(Lexicon lexicon, NLGFactory nlgFactory, Realiser realiser) {
-		this.lexicon = lexicon;
-		this.nlgFactory = nlgFactory;
-		this.realiser = realiser;
-	}
+        this.lexicon = lexicon;
+        this.nlgFactory = nlgFactory;
+        this.realiser = realiser;
+    }
+
+    public static void main(String args[]) {
+        Lexicon lexicon = Lexicon.getDefaultLexicon();
+        NLGFactory nlgFactory = new NLGFactory(lexicon);
+        Realiser realiser = new Realiser(lexicon);
+
+        SPhraseSpec s1 = nlgFactory.createClause();
+        s1.setSubject("Mike");
+        s1.setVerb("like");
+        s1.setObject("apples");
+        s1.getObject().setPlural(true);
+
+        SPhraseSpec s2 = nlgFactory.createClause();
+        s2.setSubject("Mike");
+        s2.setVerb("like");
+        s2.setObject("banana");
+        s2.getObject().setPlural(true);
+
+        SPhraseSpec s3 = nlgFactory.createClause();
+        s3.setSubject("John");
+        s3.setVerb("like");
+        s3.setObject("banana");
+        s3.getObject().setPlural(true);
+
+        List<SPhraseSpec> phrases = new ArrayList<SPhraseSpec>();
+        phrases.add(s1);
+        phrases.add(s2);
+        phrases.add(s3);
+
+        for (SPhraseSpec p : phrases) {
+            System.out.println("=>" + realiser.realiseSentence(p));
+        }
+        phrases = (new ObjectMergeRule(lexicon, nlgFactory, realiser)).apply(phrases);
+
+        for (SPhraseSpec p : phrases) {
+            System.out.println("=>" + realiser.realiseSentence(p));
+        }
+
+        SimpleNLGwithPostprocessing nlg = new SimpleNLGwithPostprocessing(SparqlEndpoint.getEndpointDBpedia());
+        SPhraseSpec s4 = nlg.getNLForTriple(Triple.create(
+                NodeFactory.createURI("http://dbpedia.org/resource/Aero_Lloyd"),
+                NodeFactory.createURI("http://dbpedia.org/ontology/headquarter"),
+                NodeFactory.createURI("http://dbpedia.org/resource/Dublin")));
+        System.out.println(realiser.realiseSentence(s4));
+        s4.getSubject().setPlural(true);
+        System.out.println(realiser.realiseSentence(s4));
+
+        SPhraseSpec s5 = nlg.getNLForTriple(Triple.create(
+                NodeFactory.createURI("http://dbpedia.org/resource/Aero_Lloyd"),
+                NodeFactory.createURI("http://dbpedia.org/ontology/weight"),
+                NodeFactory.createURI("http://dbpedia.org/resource/Leipzig")));
+        System.out.println(realiser.realiseSentence(s5));
+//        s5.getSubject().setPlural(true);
+        for (NLGElement child : s5.getSubject().getChildren()) {
+            if (!child.getFeatureAsBoolean("possessive")) {
+                child.setPlural(true);
+            }
+        }
+        System.out.println(realiser.realiseSentence(s5));
+
+        NLGElement subject = nlgFactory.createNounPhrase("Aero Loyd");
+        subject = nlgFactory.createWord("Aero Loyds", LexicalCategory.NOUN);
+        subject.setFeature(Feature.POSSESSIVE, true);
+        NPPhraseSpec object = nlgFactory.createNounPhrase("weight");
+        object.setPlural(true);
+        object.setPreModifier(subject);
+        NPPhraseSpec object2 = nlgFactory.createNounPhrase("Leipzig");
+        SPhraseSpec p = nlgFactory.createClause(object, "is", object2);
+        System.out.println(p);
+        System.out.println(realiser.realise(p));
+    }
 
     /**
      * Checks whether a rule is applicable and returns the number of pairs on
@@ -65,7 +135,7 @@ public class ObjectMergeRule implements Rule {
         }
         return max;
     }
-    
+
     /**
      * Applies this rule to the phrases
      *
@@ -73,7 +143,7 @@ public class ObjectMergeRule implements Rule {
      * @return Result of the rule being applied
      */
     public List<SPhraseSpec> apply(List<SPhraseSpec> phrases) {
-    	return apply(phrases, false);
+        return apply(phrases, false);
     }
 
     /**
@@ -121,14 +191,14 @@ public class ObjectMergeRule implements Rule {
                 phraseIndex = key;
             }
         }
-        
-        if(phraseIndex == -1) return phrases;
+
+        if (phraseIndex == -1) return phrases;
         //now merge
         Collection<Integer> toMerge = map.get(phraseIndex);
         toMerge.add(phraseIndex);
         CoordinatedPhraseElement elt = nlgFactory.createCoordinatedPhrase();
-        if(amongOthers){
-        	 elt.addPreModifier(", among others,");
+        if (amongOthers) {
+            elt.addPreModifier(", among others,");
         }
 
         for (int index : toMerge) {
@@ -142,97 +212,25 @@ public class ObjectMergeRule implements Rule {
             for (NLGElement subjElt : fusedPhrase.getSubject().getChildren()) {
                 if (!subjElt.hasFeature(Feature.POSSESSIVE) && subjElt.isA(PhraseCategory.NOUN_PHRASE)) {
                     ((NPPhraseSpec) subjElt).getHead().setPlural(true);
-                } 
+                }
             }
             //we need to transform the head of the possessive clause into singular, otherwise we could get something like "number of pageses"
-            String realisedHead = realiser.realise(((NPPhraseSpec)fusedPhrase.getSubject()).getHead()).getRealisation();
+            String realisedHead = realiser.realise(((NPPhraseSpec) fusedPhrase.getSubject()).getHead()).getRealisation();
             realisedHead = PlingStemmer.stem(realisedHead);
-            ((NPPhraseSpec)fusedPhrase.getSubject()).setHead(nlgFactory.createInflectedWord(realisedHead, LexicalCategory.NOUN));
-            
+            ((NPPhraseSpec) fusedPhrase.getSubject()).setHead(nlgFactory.createInflectedWord(realisedHead, LexicalCategory.NOUN));
+
             fusedPhrase.getSubject().setPlural(true);
             fusedPhrase.getVerb().setPlural(true);
         }
         //now create the final result
         List<SPhraseSpec> result = new ArrayList<SPhraseSpec>();
-        for (int index = 0; index < phrases.size(); index++) {            
+        for (int index = 0; index < phrases.size(); index++) {
             if (index == phraseIndex) {
                 result.add(fusedPhrase);
-            }
-            else if (!toMerge.contains(index)) {
+            } else if (!toMerge.contains(index)) {
                 result.add(phrases.get(index));
             }
         }
         return result;
-    }
-
-    public static void main(String args[]) {
-        Lexicon lexicon = Lexicon.getDefaultLexicon();
-        NLGFactory nlgFactory = new NLGFactory(lexicon);
-        Realiser realiser = new Realiser(lexicon);
-
-        SPhraseSpec s1 = nlgFactory.createClause();
-        s1.setSubject("Mike");
-        s1.setVerb("like");
-        s1.setObject("apples");
-        s1.getObject().setPlural(true);
-
-        SPhraseSpec s2 = nlgFactory.createClause();
-        s2.setSubject("Mike");
-        s2.setVerb("like");
-        s2.setObject("banana");
-        s2.getObject().setPlural(true);
-
-        SPhraseSpec s3 = nlgFactory.createClause();
-        s3.setSubject("John");
-        s3.setVerb("like");
-        s3.setObject("banana");
-        s3.getObject().setPlural(true);
-
-        List<SPhraseSpec> phrases = new ArrayList<SPhraseSpec>();
-        phrases.add(s1);
-        phrases.add(s2);
-        phrases.add(s3);
-
-        for (SPhraseSpec p : phrases) {
-            System.out.println("=>" + realiser.realiseSentence(p));
-        }
-        phrases = (new ObjectMergeRule(lexicon, nlgFactory, realiser)).apply(phrases);
-
-        for (SPhraseSpec p : phrases) {
-            System.out.println("=>" + realiser.realiseSentence(p));
-        }
-        
-        SimpleNLGwithPostprocessing nlg = new SimpleNLGwithPostprocessing(SparqlEndpoint.getEndpointDBpedia());
-        SPhraseSpec s4 = nlg.getNLForTriple(Triple.create(
-        		NodeFactory.createURI("http://dbpedia.org/resource/Aero_Lloyd"), 
-        		NodeFactory.createURI("http://dbpedia.org/ontology/headquarter"), 
-        		NodeFactory.createURI("http://dbpedia.org/resource/Dublin")));
-        System.out.println(realiser.realiseSentence(s4));
-        s4.getSubject().setPlural(true);
-        System.out.println(realiser.realiseSentence(s4));
-        
-        SPhraseSpec s5 = nlg.getNLForTriple(Triple.create(
-        		NodeFactory.createURI("http://dbpedia.org/resource/Aero_Lloyd"), 
-        		NodeFactory.createURI("http://dbpedia.org/ontology/weight"), 
-        		NodeFactory.createURI("http://dbpedia.org/resource/Leipzig")));
-        System.out.println(realiser.realiseSentence(s5));
-//        s5.getSubject().setPlural(true);
-        for (NLGElement child : s5.getSubject().getChildren()) {
-			if(!child.getFeatureAsBoolean("possessive")){
-				child.setPlural(true);
-			}
-		}
-        System.out.println(realiser.realiseSentence(s5));
-        
-        NLGElement subject = nlgFactory.createNounPhrase("Aero Loyd");
-        subject = nlgFactory.createWord("Aero Loyds", LexicalCategory.NOUN);
-        subject.setFeature(Feature.POSSESSIVE, true);
-        NPPhraseSpec object = nlgFactory.createNounPhrase("weight");
-        object.setPlural(true);
-        object.setPreModifier(subject);
-        NPPhraseSpec object2 = nlgFactory.createNounPhrase("Leipzig");
-        SPhraseSpec p = nlgFactory.createClause(object, "is", object2);
-        System.out.println(p);
-        System.out.println(realiser.realise(p));
     }
 }

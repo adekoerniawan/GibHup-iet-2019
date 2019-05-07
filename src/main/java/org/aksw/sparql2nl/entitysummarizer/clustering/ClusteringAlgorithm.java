@@ -7,7 +7,6 @@ package org.aksw.sparql2nl.entitysummarizer.clustering;
 import java.util.Set;
 
 /**
- *
  * @author ngonga
  */
 public interface ClusteringAlgorithm {

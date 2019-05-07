@@ -10,14 +10,18 @@ import org.aksw.assessment.question.answer.Answer;
 import java.util.List;
 
 /**
- *
  * @author ngonga
  */
 public interface Question {
     String getText();
+
     List<Answer> getCorrectAnswers();
-    List<Answer> getWrongAnswers();    
+
+    List<Answer> getWrongAnswers();
+
     int getDifficulty();
+
     Query getQuery();
+
     QuestionType getType();
 }

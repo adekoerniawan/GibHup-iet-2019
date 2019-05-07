@@ -33,6 +33,39 @@ public class SPARQLQueryProcessor {
         reasoner = new SPARQLReasoner(new SparqlEndpointKS(endpoint), new ExtractionDBCache("cache"));
     }
 
+    public static void main(String[] args) throws Exception {
+        SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
+        SPARQLQueryProcessor processor = new SPARQLQueryProcessor(endpoint);
+
+        Query query = QueryFactory.create(
+                "PREFIX dbr: <http://dbpedia.org/resource/> "
+                        + "PREFIX dbo: <http://dbpedia.org/ontology/> "
+                        + "SELECT ?s ?place ?date WHERE {?s a dbo:Person. ?s dbo:birthPlace ?place. ?s dbo:birthDate ?date.}");
+        Map<NamedClass, Set<Property>> occurrences = processor.processQuery(query);
+        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
+
+        query = QueryFactory.create(
+                "PREFIX dbr: <http://dbpedia.org/resource/> "
+                        + "PREFIX dbo: <http://dbpedia.org/ontology/> "
+                        + "SELECT ?place ?date WHERE {?s a dbo:Person. ?s dbo:birthPlace ?place. ?s dbo:birthDate ?date.}");
+        occurrences = processor.processQuery(query);
+        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
+
+        query = QueryFactory.create(
+                "PREFIX dbr: <http://dbpedia.org/resource/> "
+                        + "PREFIX dbo: <http://dbpedia.org/ontology/> "
+                        + "SELECT ?place ?date WHERE {dbr:Brad_Pitt dbo:birthPlace ?place. dbr:Brad_Pitt dbo:birthDate ?date.}");
+        occurrences = processor.processQuery(query);
+        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
+
+        query = QueryFactory.create(
+                "PREFIX dbr: <http://dbpedia.org/resource/> "
+                        + "PREFIX dbo: <http://dbpedia.org/ontology/> "
+                        + "SELECT ?s ?place ?date WHERE {?s a dbo:Book. ?o dbo:birthPlace ?place. ?o dbo:birthDate ?date.}");
+        occurrences = processor.processQuery(query);
+        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
+    }
+
     public Map<NamedClass, Set<Property>> processQuery(String query) {
         return processQuery(QueryFactory.create(query, Syntax.syntaxARQ));
     }
@@ -63,21 +96,22 @@ public class SPARQLQueryProcessor {
 
         return result;
     }
-    
+
     /**
      * Each log entry is processed by getting classes with its used properties.
+     *
      * @param entries
      * @return
      */
     public Collection<Map<NamedClass, Set<Property>>> processEntries(Collection<LogEntry> entries) {
-    	List<Query> queries = new ArrayList<Query>();
+        List<Query> queries = new ArrayList<Query>();
 //    	Set<String> blacklist = Sets.newHashSet("-", "bliss", "ARC" , "[CURL]");
-    	for (LogEntry entry : entries) {
-    		queries.add(entry.getSparqlQuery());
+        for (LogEntry entry : entries) {
+            queries.add(entry.getSparqlQuery());
 //    		if(!blacklist.contains(entry.userAgent)){
-//    			
+//
 //    		}
-		}
+        }
         return processQueries(queries);
     }
 
@@ -94,7 +128,7 @@ public class SPARQLQueryProcessor {
         List<Var> vars = query.getProjectVars();
 
         //we have to filter out variables which are the subject of a rdf:type statement
-        for (Iterator<Var> iterator = vars.iterator(); iterator.hasNext();) {
+        for (Iterator<Var> iterator = vars.iterator(); iterator.hasNext(); ) {
             Var var = iterator.next();
             //get all outgoing triple patterns
             Set<Triple> outgoingTriplePatterns = patternExtractor.extractOutgoingTriplePatterns(query, var);
@@ -147,38 +181,5 @@ public class SPARQLQueryProcessor {
             }
         }
         return result;
-    }
-
-    public static void main(String[] args) throws Exception {
-        SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
-        SPARQLQueryProcessor processor = new SPARQLQueryProcessor(endpoint);
-
-        Query query = QueryFactory.create(
-                "PREFIX dbr: <http://dbpedia.org/resource/> "
-                + "PREFIX dbo: <http://dbpedia.org/ontology/> "
-                + "SELECT ?s ?place ?date WHERE {?s a dbo:Person. ?s dbo:birthPlace ?place. ?s dbo:birthDate ?date.}");
-        Map<NamedClass, Set<Property>> occurrences = processor.processQuery(query);
-        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
-
-        query = QueryFactory.create(
-                "PREFIX dbr: <http://dbpedia.org/resource/> "
-                + "PREFIX dbo: <http://dbpedia.org/ontology/> "
-                + "SELECT ?place ?date WHERE {?s a dbo:Person. ?s dbo:birthPlace ?place. ?s dbo:birthDate ?date.}");
-        occurrences = processor.processQuery(query);
-        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
-
-        query = QueryFactory.create(
-                "PREFIX dbr: <http://dbpedia.org/resource/> "
-                + "PREFIX dbo: <http://dbpedia.org/ontology/> "
-                + "SELECT ?place ?date WHERE {dbr:Brad_Pitt dbo:birthPlace ?place. dbr:Brad_Pitt dbo:birthDate ?date.}");
-        occurrences = processor.processQuery(query);
-        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
-
-        query = QueryFactory.create(
-                "PREFIX dbr: <http://dbpedia.org/resource/> "
-                + "PREFIX dbo: <http://dbpedia.org/ontology/> "
-                + "SELECT ?s ?place ?date WHERE {?s a dbo:Book. ?o dbo:birthPlace ?place. ?o dbo:birthDate ?date.}");
-        occurrences = processor.processQuery(query);
-        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
     }
 }

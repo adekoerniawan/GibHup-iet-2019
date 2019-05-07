@@ -7,8 +7,8 @@ package org.aksw.sparql2nl.entitysummarizer.statistics;
 import org.aksw.sparql2nl.entitysummarizer.clustering.Node;
 
 import java.util.Map;
+
 /**
- *
  * @author ngonga
  */
 public interface Stats {

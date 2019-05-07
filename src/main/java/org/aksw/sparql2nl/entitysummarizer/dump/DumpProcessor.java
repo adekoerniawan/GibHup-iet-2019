@@ -8,10 +8,10 @@ import java.util.List;
 
 
 /**
- *
  * @author ngonga
  */
 public interface DumpProcessor {
     List<LogEntry> processDump(String file);
+
     List<LogEntry> processDump(String file, int limit);
 }

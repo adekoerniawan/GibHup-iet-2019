@@ -7,14 +7,14 @@ import java.util.Map;
  * Only used inside this class to encapsulate the Solr query results.
  */
 public class Pattern {
-    
-    public Map<String,Double> features = new HashMap<String,Double>();
+
+    public Map<String, Double> features = new HashMap<String, Double>();
     public String naturalLanguageRepresentationWithoutVariables = "";
     public String naturalLanguageRepresentation = "";
     public Double boaScore = 0D;
     public Double naturalLanguageScore = 0D;
     public String posTags = "";
-    
+
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
@@ -35,7 +35,7 @@ public class Pattern {
         builder.append("]");
         return builder.toString();
     }
-    
+
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
@@ -64,10 +64,8 @@ public class Pattern {
         if (naturalLanguageRepresentation == null) {
             if (other.naturalLanguageRepresentation != null)
                 return false;
-        }
-        else
-            if (!naturalLanguageRepresentation.equals(other.naturalLanguageRepresentation))
-                return false;
+        } else if (!naturalLanguageRepresentation.equals(other.naturalLanguageRepresentation))
+            return false;
         return true;
     }
 }

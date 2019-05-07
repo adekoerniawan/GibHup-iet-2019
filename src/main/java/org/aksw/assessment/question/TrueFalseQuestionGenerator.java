@@ -26,24 +26,46 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *
  * @author ngonga
  */
 public class TrueFalseQuestionGenerator extends MultipleChoiceQuestionGenerator {
-	
-	private static final Logger logger = Logger.getLogger(MultipleChoiceQuestionGenerator.class.getName());
 
-	public TrueFalseQuestionGenerator(SparqlEndpoint ep, String cacheDirectory, String namespace,
-			Map<NamedClass, Set<ObjectProperty>> restrictions, Set<String> personTypes, BlackList blackList) {
-		super(ep, cacheDirectory, namespace, restrictions, personTypes, blackList);
-		
-	}
-	
-	public TrueFalseQuestionGenerator(SparqlEndpoint ep, QueryExecutionFactory qef, String cacheDirectory, String namespace,
-			Map<NamedClass, Set<ObjectProperty>> restrictions, Set<String> personTypes, BlackList blackList) {
-		super(ep, qef, cacheDirectory, namespace, restrictions, personTypes, blackList);
-		
-	}
+    private static final Logger logger = Logger.getLogger(MultipleChoiceQuestionGenerator.class.getName());
+
+    public TrueFalseQuestionGenerator(SparqlEndpoint ep, String cacheDirectory, String namespace,
+                                      Map<NamedClass, Set<ObjectProperty>> restrictions, Set<String> personTypes, BlackList blackList) {
+        super(ep, cacheDirectory, namespace, restrictions, personTypes, blackList);
+
+    }
+
+    public TrueFalseQuestionGenerator(SparqlEndpoint ep, QueryExecutionFactory qef, String cacheDirectory, String namespace,
+                                      Map<NamedClass, Set<ObjectProperty>> restrictions, Set<String> personTypes, BlackList blackList) {
+        super(ep, qef, cacheDirectory, namespace, restrictions, personTypes, blackList);
+
+    }
+
+    public static void main(String args[]) {
+        Map<NamedClass, Set<ObjectProperty>> restrictions = Maps.newHashMap();
+        restrictions.put(new NamedClass("http://dbpedia.org/ontology/Writer"), Sets.newHashSet(new ObjectProperty("http://dbpedia.org/ontology/birthPlace")));
+
+        TrueFalseQuestionGenerator sqg = new TrueFalseQuestionGenerator(
+                SparqlEndpoint.getEndpointDBpedia(),
+                "cache",
+                "http://dbpedia.org/ontology/",
+                restrictions,
+                Sets.newHashSet("http://dbpedia.org/ontology/Person"),
+                new DBpediaPropertyBlackList());
+        Set<Question> questions = sqg.getQuestions(null, DIFFICULTY, 10);
+        for (Question q : questions) {
+            if (q != null) {
+                System.out.println(">>" + q.getText());
+                List<Answer> correctAnswers = q.getCorrectAnswers();
+                System.out.println(correctAnswers);
+                List<Answer> wrongAnswers = q.getWrongAnswers();
+                System.out.println(wrongAnswers);
+            }
+        }
+    }
 
     @Override
     public Question generateQuestion(Resource r, NamedClass type) {
@@ -59,12 +81,12 @@ public class TrueFalseQuestionGenerator extends MultipleChoiceQuestionGenerator 
             qs = rs.next();
             property = qs.getResource("p");
             object = qs.getResource("o");
-            if (!GeneralPropertyBlackList.contains(property)){
-            	if(blackList != null && !blackList.contains(property)) {
-	                if (Math.random() >= 0.5) {
-	                    result = true;
-	                }
-            	}
+            if (!GeneralPropertyBlackList.contains(property)) {
+                if (blackList != null && !blackList.contains(property)) {
+                    if (Math.random() >= 0.5) {
+                        result = true;
+                    }
+                }
             }
         }
         logger.info("...got result " + result);
@@ -85,7 +107,7 @@ public class TrueFalseQuestionGenerator extends MultipleChoiceQuestionGenerator 
         if (Math.random() <= 0.5) {
             //true answer
             Triple t = new Triple(r.asNode(), property.asNode(), object.asNode());
-            return new SimpleQuestion("Is the following statement correct:\n"+nlg.realiser.realiseSentence(nlg.getNLForTriple(t)), trueAsAnswer, falseAsAnswer, DIFFICULTY, questionQuery, QuestionType.TRUEFALSE);
+            return new SimpleQuestion("Is the following statement correct:\n" + nlg.realiser.realiseSentence(nlg.getNLForTriple(t)), trueAsAnswer, falseAsAnswer, DIFFICULTY, questionQuery, QuestionType.TRUEFALSE);
         } else {
             //get values for property, i.e. the correct answers
             logger.info("Generating wrong answers...");
@@ -100,32 +122,9 @@ public class TrueFalseQuestionGenerator extends MultipleChoiceQuestionGenerator 
                     break;
                 }
             }
-            if(wrongAnswer == null) return null;
+            if (wrongAnswer == null) return null;
             Triple t = new Triple(r.asNode(), property.asNode(), wrongAnswer.asNode());
-            return new SimpleQuestion("Is the following statement correct:\n"+nlg.realiser.realiseSentence(nlg.getNLForTriple(t)), falseAsAnswer, trueAsAnswer, DIFFICULTY, questionQuery, QuestionType.TRUEFALSE);
-        }
-    }
-
-    public static void main(String args[]) {
-    	Map<NamedClass, Set<ObjectProperty>> restrictions = Maps.newHashMap();
-        restrictions.put(new NamedClass("http://dbpedia.org/ontology/Writer"), Sets.newHashSet(new ObjectProperty("http://dbpedia.org/ontology/birthPlace")));
-        
-        TrueFalseQuestionGenerator sqg = new TrueFalseQuestionGenerator(
-        		SparqlEndpoint.getEndpointDBpedia(), 
-        		"cache", 
-        		"http://dbpedia.org/ontology/", 
-        		restrictions, 
-        		Sets.newHashSet("http://dbpedia.org/ontology/Person"),
-        		new DBpediaPropertyBlackList());
-        Set<Question> questions = sqg.getQuestions(null, DIFFICULTY, 10);
-        for (Question q : questions) {
-            if (q != null) {
-                System.out.println(">>" + q.getText());
-                List<Answer> correctAnswers = q.getCorrectAnswers();
-                System.out.println(correctAnswers);
-                List<Answer> wrongAnswers = q.getWrongAnswers();
-                System.out.println(wrongAnswers);
-            }
+            return new SimpleQuestion("Is the following statement correct:\n" + nlg.realiser.realiseSentence(nlg.getNLForTriple(t)), falseAsAnswer, trueAsAnswer, DIFFICULTY, questionQuery, QuestionType.TRUEFALSE);
         }
     }
 }

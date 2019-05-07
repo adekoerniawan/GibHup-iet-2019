@@ -7,7 +7,6 @@ package org.aksw.sparql2nl.similarity;
 import org.aksw.sparql2nl.queryprocessing.Query;
 
 /**
- *
  * @author ngonga
  */
 public interface QuerySimilarity {

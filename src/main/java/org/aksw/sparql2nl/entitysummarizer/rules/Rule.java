@@ -9,10 +9,10 @@ import simplenlg.phrasespec.SPhraseSpec;
 import java.util.List;
 
 /**
- *
  * @author ngonga
  */
 public interface Rule {
     public int isApplicable(List<SPhraseSpec> phrases);
+
     public List<SPhraseSpec> apply(List<SPhraseSpec> phrases);
 }

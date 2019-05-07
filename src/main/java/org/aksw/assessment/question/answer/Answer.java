@@ -5,10 +5,10 @@
 package org.aksw.assessment.question.answer;
 
 /**
- *
  * @author ngonga
  */
 public interface Answer {
     String getText();
+
     String getHint();
 }

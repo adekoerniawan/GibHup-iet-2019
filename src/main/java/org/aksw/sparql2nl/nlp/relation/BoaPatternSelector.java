@@ -18,19 +18,17 @@ import java.util.*;
 import java.util.regex.Matcher;
 
 /**
- * 
  * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
  */
 public class BoaPatternSelector {
 
+    // 300 / 10 / 10
+    private static final List<String> BE_TOKENS = Arrays.asList("am", "are", "is", "was", "were");
+    private static final String SOLR_INDEX = "sparql2nl";//"sparql2nl";//"boa_detail";
     private static CommonsHttpSolrServer server;
     private static Double WORDNET_DISTANCE_BOOST_FACTOR = 300000D;
     private static Double BOA_SCORE_BOOST_FACTOR = 10000D;
     private static Double REVERB_BOOST_FACTOR = 1000000D;
-
-    // 300 / 10 / 10
-    private static final List<String> BE_TOKENS = Arrays.asList("am", "are", "is", "was", "were");
-    private static final String SOLR_INDEX = "sparql2nl";//"sparql2nl";//"boa_detail";
 
     static {
 
@@ -38,8 +36,7 @@ public class BoaPatternSelector {
 
             server = new CommonsHttpSolrServer("http://dbpedia.aksw.org:8080/solr/" + SOLR_INDEX);
             server.setRequestWriter(new BinaryRequestWriter());
-        }
-        catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
 
             System.out.println("CommonsHttpSolrServer could not be created");
             e.printStackTrace();
@@ -49,7 +46,7 @@ public class BoaPatternSelector {
     /**
      * Returns an ordered list of natural language representations for a given
      * property uri. The list is ordered from highest first to lowest.
-     * 
+     *
      * @param propertyUri
      * @return
      */
@@ -138,22 +135,21 @@ public class BoaPatternSelector {
     }
 
     /**
-     * 
      * @param pattern
      * @return
      */
     private static Double calculateNaturalLanguageScore(Pattern pattern) {
 
         return REVERB_BOOST_FACTOR * pattern.features.get("REVERB") + WORDNET_DISTANCE_BOOST_FACTOR * pattern.features.get("WORDNET_DISTANCE")
-        // + LEARNED_FROM_BOOST_FACTOR *
-        // pattern.features.get("SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM")
+                // + LEARNED_FROM_BOOST_FACTOR *
+                // pattern.features.get("SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM")
                 + BOA_SCORE_BOOST_FACTOR * pattern.boaScore;
     }
 
     /**
      * Returns all patterns from the index and their features for reverb and the
      * wordnet distance and the overall boa-boaScore.
-     * 
+     *
      * @param propertyUri
      * @return a list of patterns
      */
@@ -202,15 +198,13 @@ public class BoaPatternSelector {
                         p.boaScore += pattern.boaScore;
                         p.naturalLanguageScore += pattern.naturalLanguageScore;
                         patterns.put(pattern.hashCode(), p);
-                    }
-                    else {
+                    } else {
 
                         patterns.put(pattern.hashCode(), pattern);
                     }
                 }
             }
-        }
-        catch (SolrServerException e) {
+        } catch (SolrServerException e) {
 
             System.out.println("Could not execute query: " + e);
             e.printStackTrace();
@@ -223,9 +217,9 @@ public class BoaPatternSelector {
         // createPropertyDistribution();
 
         List<String> uris = Arrays.asList("http://dbpedia.org/property/accessioneudate", "http://dbpedia.org/property/awards", "http://dbpedia.org/property/borderingstates", "http://dbpedia.org/property/classis", "http://dbpedia.org/property/country", "http://dbpedia.org/property/currency", "http://dbpedia.org/property/currencyCode", "http://dbpedia.org/property/densityrank", "http://dbpedia.org/property/design", "http://dbpedia.org/property/designer", "http://dbpedia.org/property/elevationM", "http://dbpedia.org/property/foundation", "http://dbpedia.org/property/ground", "http://dbpedia.org/property/industry", "http://dbpedia.org/property/location", "http://dbpedia.org/property/locationCountry", "http://dbpedia.org/property/mineral", "http://dbpedia.org/property/museum", "http://dbpedia.org/property/numEmployees", "http://dbpedia.org/property/office", "http://dbpedia.org/property/officialLanguages", "http://dbpedia.org/property/populationTotal", "http://dbpedia.org/property/publisher", "http://dbpedia.org/property/rulingParty", "http://dbpedia.org/property/spouse", "http://dbpedia.org/property/starring", "http://dbpedia.org/property/title", "http://dbpedia.org/ontology/album", "http://dbpedia.org/ontology/areaCode", "http://dbpedia.org/ontology/author", "http://dbpedia.org/ontology/battle", "http://dbpedia.org/ontology/birthDate", "http://dbpedia.org/ontology/birthPlace", "http://dbpedia.org/ontology/capital", "http://dbpedia.org/ontology/child", "http://dbpedia.org/ontology/country", "http://dbpedia.org/ontology/creator", "http://dbpedia.org/ontology/crosses", "http://dbpedia.org/ontology/currency", "http://dbpedia.org/ontology/date", "http://dbpedia.org/ontology/deathCause", "http://dbpedia.org/ontology/deathDate", "http://dbpedia.org/ontology/deathPlace", "http://dbpedia.org/ontology/developer", "http://dbpedia.org/ontology/director", "http://dbpedia.org/ontology/elevation", "http://dbpedia.org/ontology/formationYear", "http://dbpedia.org/ontology/foundationPlace", "http://dbpedia.org/ontology/genre", "http://dbpedia.org/ontology/governmentType", "http://dbpedia.org/ontology/ground", "http://dbpedia.org/ontology/height", "http://dbpedia.org/ontology/highestPlace", "http://dbpedia.org/ontology/isPartOf", "http://dbpedia.org/ontology/keyPerson", "http://dbpedia.org/ontology/language", "http://dbpedia.org/ontology/largestCity", "http://dbpedia.org/ontology/leaderName", "http://dbpedia.org/ontology/league", "http://dbpedia.org/ontology/locatedInArea", "http://dbpedia.org/ontology/location", "http://dbpedia.org/ontology/numberOfEmployees", "http://dbpedia.org/ontology/numberOfEntrances", "http://dbpedia.org/ontology/officialLanguage", "http://dbpedia.org/ontology/orderInOffice", "http://dbpedia.org/ontology/owner", "http://dbpedia.org/ontology/producer", "http://dbpedia.org/ontology/programmingLanguage", "http://dbpedia.org/ontology/publisher", "http://dbpedia.org/ontology/seasonNumber", "http://dbpedia.org/ontology/series", "http://dbpedia.org/ontology/sourceCountry", "http://dbpedia.org/ontology/spokenIn", "http://dbpedia.org/ontology/spouse", "http://dbpedia.org/ontology/starring");
-        
+
         for (String uri : uris) {
-        	
+
             List<Pattern> patterns = BoaPatternSelector.getNaturalLanguageRepresentation(uri, 1);
 
             if (patterns.size() > 0) {
@@ -233,8 +227,7 @@ public class BoaPatternSelector {
                 System.out.print(uri + ": ");
                 for (Pattern p : patterns)
                     System.out.println(p.naturalLanguageRepresentation);
-            }
-            else System.out.println(uri + ": ---------------------------------");
+            } else System.out.println(uri + ": ---------------------------------");
         }
     }
 
@@ -246,13 +239,11 @@ public class BoaPatternSelector {
         try {
             f = new BufferedInputStream(new FileInputStream(filePath));
             f.read(buffer);
-        }
-        finally {
+        } finally {
             if (f != null)
                 try {
                     f.close();
-                }
-                catch (IOException ignored) {
+                } catch (IOException ignored) {
                 }
         }
         String queryString = new String(buffer);

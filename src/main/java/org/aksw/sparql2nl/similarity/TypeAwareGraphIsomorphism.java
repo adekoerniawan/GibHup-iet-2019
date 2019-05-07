@@ -15,13 +15,14 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 /**
- *
  * @author ngonga
  */
 public class TypeAwareGraphIsomorphism implements QuerySimilarity {
 
-    /** Computes size of small graph isomorphism and norms it with
+    /**
+     * Computes size of small graph isomorphism and norms it with
      * size of graphs
+     *
      * @param q1 First query
      * @param q2 Second query
      * @return Similarity

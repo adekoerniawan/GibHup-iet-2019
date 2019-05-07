@@ -12,7 +12,6 @@ import org.aksw.sparql2nl.smooth_nlg.SPARQLDeconstructor;
 import org.dllearner.kb.sparql.SparqlEndpoint;
 
 /**
- *
  * @author christina
  */
 public class SmoothNLGTest {
@@ -21,9 +20,9 @@ public class SmoothNLGTest {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+
         SPARQLDeconstructor decon = new SPARQLDeconstructor(SparqlEndpoint.getEndpointDBpedia());
-        
+
         String query1 = "PREFIX dbo: <http://dbpedia.org/ontology/> "
                 + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
                 + "PREFIX res: <http://dbpedia.org/resource/> "
@@ -55,7 +54,7 @@ public class SmoothNLGTest {
                 + "}";
         String query4 = "PREFIX dbo: <http://dbpedia.org/ontology/> "
                 + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-                + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "                
+                + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
                 + "SELECT DISTINCT ?uri ?string "
                 + "WHERE { ?cave rdf:type dbo:Cave . "
                 + "?cave dbo:location ?uri . "
@@ -75,26 +74,28 @@ public class SmoothNLGTest {
                 + "OPTIONAL { ?uri rdfs:label ?string. FILTER (lang(?string) = 'en') } "
                 + " } ORDER BY DESC(?otherelevation) LIMIT 1";
         try {
-            CardBox c; NLConstructor con;System.out.println(query1);
-            c = decon.deconstruct(QueryFactory.create(query1,Syntax.syntaxARQ));
+            CardBox c;
+            NLConstructor con;
+            System.out.println(query1);
+            c = decon.deconstruct(QueryFactory.create(query1, Syntax.syntaxARQ));
             con = new NLConstructor(c);
             con.construct();
             System.out.println("\n----------------------------\n");
-            c = decon.deconstruct(QueryFactory.create(query3,Syntax.syntaxARQ));
+            c = decon.deconstruct(QueryFactory.create(query3, Syntax.syntaxARQ));
             con = new NLConstructor(c);
             con.construct();
             System.out.println("\n----------------------------\n");
-            c = decon.deconstruct(QueryFactory.create(query5,Syntax.syntaxARQ));
+            c = decon.deconstruct(QueryFactory.create(query5, Syntax.syntaxARQ));
             con = new NLConstructor(c);
             con.construct();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     public static void show(String[][] m) {
         for (int i = 0; i < m.length; i++) {
-            for (int j = 0; j < 3; j++) 
+            for (int j = 0; j < 3; j++)
                 System.out.print(m[i][j] + " ");
             System.out.println();
         }

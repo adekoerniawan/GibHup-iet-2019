@@ -22,18 +22,55 @@ import java.util.List;
  * @author ngonga
  */
 public class PredicateMergeRule implements Rule {
-	
-	Lexicon lexicon;
+
+    Lexicon lexicon;
     NLGFactory nlgFactory;
     Realiser realiser;
 
     public PredicateMergeRule(Lexicon lexicon, NLGFactory nlgFactory, Realiser realiser) {
-		this.lexicon = lexicon;
-		this.nlgFactory = nlgFactory;
-		this.realiser = realiser;
-	}
+        this.lexicon = lexicon;
+        this.nlgFactory = nlgFactory;
+        this.realiser = realiser;
+    }
 
-   
+    public static void main(String args[]) {
+        Lexicon lexicon = Lexicon.getDefaultLexicon();
+        NLGFactory nlgFactory = new NLGFactory(lexicon);
+        Realiser realiser = new Realiser(lexicon);
+
+        SPhraseSpec s1 = nlgFactory.createClause();
+        s1.setSubject("Mike");
+        s1.setVerb("like");
+        s1.setObject("apples");
+        s1.getObject().setPlural(true);
+
+        SPhraseSpec s2 = nlgFactory.createClause();
+        s2.setSubject("Mike");
+        s2.setVerb("eat");
+        s2.setObject("apples");
+        s2.getObject().setPlural(true);
+
+        SPhraseSpec s3 = nlgFactory.createClause();
+        s3.setSubject("John");
+        s3.setVerb("hate");
+        s3.setObject("apples");
+        s3.getObject().setPlural(true);
+
+        List<SPhraseSpec> phrases = new ArrayList<SPhraseSpec>();
+        phrases.add(s1);
+        phrases.add(s2);
+        phrases.add(s3);
+
+        for (SPhraseSpec p : phrases) {
+            System.out.println("=>" + realiser.realiseSentence(p));
+        }
+        phrases = (new PredicateMergeRule(lexicon, nlgFactory, realiser)).apply(phrases);
+
+        for (SPhraseSpec p : phrases) {
+            System.out.println("=>" + realiser.realiseSentence(p));
+        }
+    }
+
     /**
      * Checks whether a rule is applicable and returns the maximal number of
      * matching predicate realizations
@@ -92,13 +129,13 @@ public class PredicateMergeRule implements Rule {
         int phraseIndex = -1;
 
         //find the index with the highest number of mappings
-        for (int key: map.keySet()) {
+        for (int key : map.keySet()) {
             if (map.get(key).size() > maxSize) {
                 maxSize = map.get(key).size();
                 phraseIndex = key;
             }
         }
-        if(phraseIndex == -1) return phrases;
+        if (phraseIndex == -1) return phrases;
         //now merge
         NLGFactory nlgFactory = new NLGFactory(Lexicon.getDefaultLexicon());
         Collection<Integer> toMerge = map.get(phraseIndex);
@@ -121,43 +158,5 @@ public class PredicateMergeRule implements Rule {
             }
         }
         return result;
-    }
-
-    public static void main(String args[]) {
-        Lexicon lexicon = Lexicon.getDefaultLexicon();
-        NLGFactory nlgFactory = new NLGFactory(lexicon);
-        Realiser realiser = new Realiser(lexicon);
-
-        SPhraseSpec s1 = nlgFactory.createClause();
-        s1.setSubject("Mike");
-        s1.setVerb("like");
-        s1.setObject("apples");
-        s1.getObject().setPlural(true);
-
-        SPhraseSpec s2 = nlgFactory.createClause();
-        s2.setSubject("Mike");
-        s2.setVerb("eat");
-        s2.setObject("apples");
-        s2.getObject().setPlural(true);
-
-        SPhraseSpec s3 = nlgFactory.createClause();
-        s3.setSubject("John");
-        s3.setVerb("hate");
-        s3.setObject("apples");
-        s3.getObject().setPlural(true);
-
-        List<SPhraseSpec> phrases = new ArrayList<SPhraseSpec>();
-        phrases.add(s1);
-        phrases.add(s2);
-        phrases.add(s3);
-
-        for (SPhraseSpec p : phrases) {
-            System.out.println("=>" + realiser.realiseSentence(p));
-        }
-        phrases = (new PredicateMergeRule(lexicon, nlgFactory, realiser)).apply(phrases);
-
-        for (SPhraseSpec p : phrases) {
-            System.out.println("=>" + realiser.realiseSentence(p));
-        }
     }
 }

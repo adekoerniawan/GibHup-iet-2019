@@ -16,17 +16,20 @@ import java.util.regex.Pattern;
 
 /**
  * Computes the similarity between SPARQL queries. If the queries are not isomorphic,
- * the similarity is 0.5*subgraphIsomorphy. If they are isomorphic but do not share 
+ * the similarity is 0.5*subgraphIsomorphy. If they are isomorphic but do not share
  * the same set of selected variables, then their similarity is exactly 0.5. If the
  * set of vars is shared, then the similarity function also checks whether the direction
- * of the edges are the same. The similarity s between the sets S1 and S2 of edges is 
+ * of the edges are the same. The similarity s between the sets S1 and S2 of edges is
  * 2*|intersection (S1, S2)|/(|S1|+|S2|). The final similarity is then 0.5 + s.
+ *
  * @author ngonga
  */
 public class NormedGraphIsomorphism implements QuerySimilarity {
 
-    /** Computes size of small graph isomorphism and norms it with
+    /**
+     * Computes size of small graph isomorphism and norms it with
      * size of graphs
+     *
      * @param q1 First query
      * @param q2 Second query
      * @return Similarity
@@ -39,7 +42,7 @@ public class NormedGraphIsomorphism implements QuerySimilarity {
         gi.calculate();
         if (gi.getGraphIsomorphism() == 1) {
             return 0.5 + 0.5 * directionalSimilarity(q1, q2, gi.getCliqueList());
-        } 
+        }
 //        return gi.getSimilarity();
 
         SubgraphIsomorphism si = new SubgraphIsomorphism(g1, g2);

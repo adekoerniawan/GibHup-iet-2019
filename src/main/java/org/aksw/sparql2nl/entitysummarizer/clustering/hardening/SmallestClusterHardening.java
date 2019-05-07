@@ -15,10 +15,11 @@ import java.util.Set;
 
 /**
  * Hardening that prefers clusters with smaller weights
+ *
  * @author ngonga
  */
-public class SmallestClusterHardening extends LargestClusterHardening{
-     public List<Set<Node>> harden(Set<Set<Node>> clusters, WeightedGraph wg) {
+public class SmallestClusterHardening extends LargestClusterHardening {
+    public List<Set<Node>> harden(Set<Set<Node>> clusters, WeightedGraph wg) {
         Set<Node> nodes = new HashSet<Node>(wg.getNodes().keySet());
         double min, weight;
         Set<Node> bestCluster;

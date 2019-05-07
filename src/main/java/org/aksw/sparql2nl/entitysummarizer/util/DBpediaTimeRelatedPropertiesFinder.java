@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.aksw.sparql2nl.entitysummarizer.util;
 
@@ -19,27 +19,27 @@ import java.util.Set;
  */
 public class DBpediaTimeRelatedPropertiesFinder {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
-		SPARQLReasoner reasoner = new SPARQLReasoner(endpoint, "cache");
-		QueryExecutionFactoryHttp qef = new QueryExecutionFactoryHttp(endpoint.getURL().toString(), endpoint.getDefaultGraphURIs());
-		Set<ObjectProperty> properties = reasoner.getOWLObjectProperties();
-		for (ObjectProperty p : properties) {
-			String query = "SELECT ?o WHERE {?s <" + p + "> ?o} LIMIT 1"; 
-			QueryExecution qe = qef.createQueryExecution(query);
-			ResultSet rs = qe.execSelect();
-			if(rs.hasNext()){
-				Resource object = rs.next().getResource("o");
-				if(object.getURI().contains("__")){
-					System.out.println(p);
-				}
-			}
-			qe.close();
-		}
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
+        SPARQLReasoner reasoner = new SPARQLReasoner(endpoint, "cache");
+        QueryExecutionFactoryHttp qef = new QueryExecutionFactoryHttp(endpoint.getURL().toString(), endpoint.getDefaultGraphURIs());
+        Set<ObjectProperty> properties = reasoner.getOWLObjectProperties();
+        for (ObjectProperty p : properties) {
+            String query = "SELECT ?o WHERE {?s <" + p + "> ?o} LIMIT 1";
+            QueryExecution qe = qef.createQueryExecution(query);
+            ResultSet rs = qe.execSelect();
+            if (rs.hasNext()) {
+                Resource object = rs.next().getResource("o");
+                if (object.getURI().contains("__")) {
+                    System.out.println(p);
+                }
+            }
+            qe.close();
+        }
 
-	}
+    }
 
 }

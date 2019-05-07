@@ -11,18 +11,16 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *
  * @author ngonga
  */
 public class DumpStatistics {
     // 1. Get statistics on properties ergo Map<Node, Map<Set<Node>, Integer>>> 
     // maps each class to a map that contains property pairs and the frequency 
     // with which they occur
-    
-    public Set<Set<Node>> clusterProperties(Map<Set<Node>, Integer> properties)
-    {
+
+    public Set<Set<Node>> clusterProperties(Map<Set<Node>, Integer> properties) {
         return new HashSet<Set<Node>>();
-        
+
 //        Model m = ModelFactory.createDefaultModel();
 //        Property m.createProperty(null, null);
     }

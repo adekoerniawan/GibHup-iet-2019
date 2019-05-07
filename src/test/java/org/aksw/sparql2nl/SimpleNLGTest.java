@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.aksw.sparql2nl;
 
@@ -17,27 +17,27 @@ import simplenlg.realiser.english.Realiser;
  */
 public class SimpleNLGTest {
 
-	@Test
-	public void testDefaultLexicon() {
-		String cls = "airport";
-		Lexicon lexicon = Lexicon.getDefaultLexicon();
-		NLGFactory nlgFactory = new NLGFactory(lexicon);
-		Realiser realiser = new Realiser(lexicon);
-		NLGElement word = nlgFactory.createWord(cls, LexicalCategory.NOUN);
-		NLGElement nounPhrase = nlgFactory.createNounPhrase(word);
-		System.out.println(nounPhrase.getAllFeatures());
-		System.out.println(nounPhrase.getRealisation());
-		nounPhrase.setFeature(Feature.POSSESSIVE, true);
-		nounPhrase = realiser.realise(nounPhrase);
-		System.out.println(nounPhrase.getAllFeatures());
-		System.out.println(nounPhrase.getRealisation());
-		
-		word = nlgFactory.createWord(cls, LexicalCategory.NOUN);
-		nounPhrase = nlgFactory.createNounPhrase(word);
-		nounPhrase = realiser.realise(nounPhrase);
-		System.out.println(nounPhrase.getAllFeatures());
-		System.out.println(nounPhrase.getRealisation());
-	}
+    @Test
+    public void testDefaultLexicon() {
+        String cls = "airport";
+        Lexicon lexicon = Lexicon.getDefaultLexicon();
+        NLGFactory nlgFactory = new NLGFactory(lexicon);
+        Realiser realiser = new Realiser(lexicon);
+        NLGElement word = nlgFactory.createWord(cls, LexicalCategory.NOUN);
+        NLGElement nounPhrase = nlgFactory.createNounPhrase(word);
+        System.out.println(nounPhrase.getAllFeatures());
+        System.out.println(nounPhrase.getRealisation());
+        nounPhrase.setFeature(Feature.POSSESSIVE, true);
+        nounPhrase = realiser.realise(nounPhrase);
+        System.out.println(nounPhrase.getAllFeatures());
+        System.out.println(nounPhrase.getRealisation());
+
+        word = nlgFactory.createWord(cls, LexicalCategory.NOUN);
+        nounPhrase = nlgFactory.createNounPhrase(word);
+        nounPhrase = realiser.realise(nounPhrase);
+        System.out.println(nounPhrase.getAllFeatures());
+        System.out.println(nounPhrase.getRealisation());
+    }
 	
 	/*@Test
 	public void testNIHLexicon() {

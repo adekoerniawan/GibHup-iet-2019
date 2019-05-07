@@ -10,25 +10,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
  * @author ngonga
  */
 public class ChiSquaredStats implements Stats {
-    
-    public Map<? extends Node, Double> computeSignificance(Map<? extends Node, Double> edges)
-    {
+
+    public Map<? extends Node, Double> computeSignificance(Map<? extends Node, Double> edges) {
         double expected = 0d;
-        for(Node n: edges.keySet())
-        {
+        for (Node n : edges.keySet()) {
             expected = expected + edges.get(n);
         }
-        expected = expected/edges.keySet().size();
-        
+        expected = expected / edges.keySet().size();
+
         Map<Node, Double> result = new HashMap<Node, Double>();
-        for(Node n: edges.keySet())
-        {
-            result.put(n, Math.pow(edges.get(n)-expected, 2)/expected);
+        for (Node n : edges.keySet()) {
+            result.put(n, Math.pow(edges.get(n) - expected, 2) / expected);
         }
         return result;
-    }    
+    }
 }

@@ -14,9 +14,10 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 /**
- * Processes a SPARQL query and stores information such as 
+ * Processes a SPARQL query and stores information such as
  * - query with only variables
  * - mapping of variables to URIs
+ *
  * @author ngonga
  */
 public class Query {
@@ -35,26 +36,6 @@ public class Query {
     private boolean usesLimit;
     private boolean usesCount;
     private boolean usesSelect;
-
-    public boolean getUsesSelect() {
-        return usesSelect;
-    }
-
-    public boolean getUsesCount() {
-        return usesCount;
-    }
-
-    public TreeSet<String> getSelectedVars() {
-        return selectedVars;
-    }
-
-    public boolean getUsesGroupBy() {
-        return usesGroupBy;
-    }
-    
-    public boolean getUsesLimit() {
-        return usesLimit;
-    }
 
     public Query(String sparqlQuery) {
         originalQuery = sparqlQuery;
@@ -84,23 +65,86 @@ public class Query {
         } else {
             usesCount = false;
         }
-        
+
         if (sparqlQuery.toLowerCase().contains("select ")) {
             usesSelect = true;
         } else {
             usesSelect = false;
         }
         replaceNonVariables();
-        getGraphRepresentation();        
+        getGraphRepresentation();
+    }
+
+    /**
+     * Computes a simple string representation of the input
+     *
+     * @param g Input graph
+     * @return String representation
+     */
+    public static String getStringRepresentation(SimpleGraphAccessor g) {
+
+        String result = "";
+        result = result + "Nodeset = " + g.getNodeSet() + "\n<";
+        for (IGraphNode node : g.getNodeSet()) {
+            for (IGraphNode node2 : node.getSuccessorSet()) {
+                result = result + node.getLabel() + " -> " + node2.getLabel() + "\n";
+            }
+        }
+        return result + ">";
+    }
+
+    //just for tests
+    public static void main(String args[]) {
+//        String query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"+
+//"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"+
+//"ASK WHERE {\n"+
+//"?y rdf:type ?p13736.\n"+
+//"}\n";
+        String query = "SELECT ?x WHERE {?x ?a ?b. ?x ?c ?d}";
+
+        String query2 = "SELECT ?x WHERE {?x ?a ?b. ?x rdf:type ?d}";
+        Query q1 = new Query(query);
+        Query q2 = new Query(query2);
+        //Query q2 = new Query(query2);
+//        System.out.println(q1.originalQuery);
+//        System.out.println(q1.queryWithOnlyVars);
+//        System.out.println(q1.nonVar2Var);
+//        System.out.println(q1.var2NonVar);
+//        System.out.println(q1.exceptions);
+//        //q1.getGraphRepresentation();
+        System.out.println("\n---\n" + getStringRepresentation(q1.getGraphRepresentation()));
+        System.out.println("\n---\n" + getStringRepresentation(q2.getGraphRepresentation()));
+        System.out.println(Similarity.getSimilarity(q1, q2, SimilarityMeasure.GRAPH_ISOMORPHY));
+        System.out.println(Similarity.getSimilarity(q1, q2, SimilarityMeasure.TYPE_AWARE_ISOMORPHY));
+    }
+
+    public boolean getUsesSelect() {
+        return usesSelect;
+    }
+
+    public boolean getUsesCount() {
+        return usesCount;
+    }
+
+    public TreeSet<String> getSelectedVars() {
+        return selectedVars;
+    }
+
+    public boolean getUsesGroupBy() {
+        return usesGroupBy;
+    }
+
+    public boolean getUsesLimit() {
+        return usesLimit;
     }
 
     // Replaces non-variables that are not members of the exception with variables
     private void replaceNonVariables() {
         String copy = originalQuery;
-                
+
         copy = copy.replaceAll("\n", " ");
-        if(!copy.contains("{ ")) copy = copy.replaceAll(Pattern.quote("{"), "{ ");
-        if(!copy.contains(" }")) copy = copy.replaceAll(Pattern.quote("}"), " }");
+        if (!copy.contains("{ ")) copy = copy.replaceAll(Pattern.quote("{"), "{ ");
+        if (!copy.contains(" }")) copy = copy.replaceAll(Pattern.quote("}"), " }");
         copy = copy.replaceAll(Pattern.quote(". "), " . ");
         var2NonVar = new HashMap<String, String>();
         nonVar2Var = new HashMap<String, String>();
@@ -113,7 +157,7 @@ public class Query {
             }
         }
 
-        //2. Replace everything that contains : with a var. 
+        //2. Replace everything that contains : with a var.
         //Will assume that aaa is never used a var label
         String split[] = copy.split(" ");
         copy = copy.trim();
@@ -121,32 +165,30 @@ public class Query {
         for (int i = 0; i < split.length; i++) {
             split[i] = split[i].trim();
             //ignore prefixes
-            while (split[i].equalsIgnoreCase("PREFIX")) {                
+            while (split[i].equalsIgnoreCase("PREFIX")) {
                 //System.out.println(split[i]);
-                i = i + 3;                
+                i = i + 3;
                 //System.out.println(split[i]);
-            } 
-            if (split[i].contains(":") || (split[i].contains("?") && !split[i].contains("?aaa"))) {                
+            }
+            if (split[i].contains(":") || (split[i].contains("?") && !split[i].contains("?aaa"))) {
                 if (!nonVar2Var.containsKey(split[i])) {
                     nonVar2Var.put(split[i], "?aaa" + counter);
                     var2NonVar.put("?aaa" + counter, split[i]);
                     //if(split[i].endsWith("\\."))
                     //copy = copy.replaceAll(Pattern.quote(split[i]), "?aaa" + counter +".");
-                    copy = copy.replaceAll(Pattern.quote(split[i])+" ", "?aaa" + counter+" ");
+                    copy = copy.replaceAll(Pattern.quote(split[i]) + " ", "?aaa" + counter + " ");
                     counter++;
                 }
             }
         }
         //3. get selectedVars
-        if(usesSelect)
-        {
+        if (usesSelect) {
             selectedVars = new TreeSet<String>();
-            String vars = copy.substring(copy.toLowerCase().indexOf("select ")+7, 
+            String vars = copy.substring(copy.toLowerCase().indexOf("select ") + 7,
                     copy.toLowerCase().indexOf(" where"));
             split = vars.trim().split(" ");
-            for(int i=0; i<split.length; i++)
-            {
-                if(split[i].length()>1)
+            for (int i = 0; i < split.length; i++) {
+                if (split[i].length() > 1)
                     selectedVars.add(split[i].trim());
             }
         }
@@ -155,7 +197,7 @@ public class Query {
             if (key.startsWith("\\!\\!")) {
                 queryWithOnlyVars = queryWithOnlyVars.replaceAll(key, exceptions.get(key));
             }
-        }        
+        }
     }
 
     //Computes a simple graph representation of the query
@@ -192,23 +234,6 @@ public class Query {
         return graph;
     }
 
-    /** Computes a simple string representation of the input
-     * 
-     * @param g Input graph
-     * @return String representation
-     */
-    public static String getStringRepresentation(SimpleGraphAccessor g) {
-        
-        String result = "";
-        result = result +"Nodeset = "+g.getNodeSet() + "\n<";
-        for (IGraphNode node : g.getNodeSet()) {
-            for (IGraphNode node2 : node.getSuccessorSet()) {
-                result = result + node.getLabel() + " -> " + node2.getLabel() + "\n";
-            }
-        }
-        return result+">";
-    }
-
     public HashMap<String, String> getNonVar2Var() {
         return nonVar2Var;
     }
@@ -223,30 +248,5 @@ public class Query {
 
     public HashMap<String, String> getVar2NonVar() {
         return var2NonVar;
-    }
-
-    //just for tests
-    public static void main(String args[]) {
-//        String query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"+
-//"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"+
-//"ASK WHERE {\n"+
-//"?y rdf:type ?p13736.\n"+
-//"}\n";
-        String query = "SELECT ?x WHERE {?x ?a ?b. ?x ?c ?d}"; 
-
-        String query2 = "SELECT ?x WHERE {?x ?a ?b. ?x rdf:type ?d}"; 
-        Query q1 = new Query(query);
-        Query q2 = new Query(query2);
-        //Query q2 = new Query(query2);
-//        System.out.println(q1.originalQuery);
-//        System.out.println(q1.queryWithOnlyVars);
-//        System.out.println(q1.nonVar2Var);
-//        System.out.println(q1.var2NonVar);
-//        System.out.println(q1.exceptions);
-//        //q1.getGraphRepresentation();
-        System.out.println("\n---\n" + getStringRepresentation(q1.getGraphRepresentation()));
-        System.out.println("\n---\n" + getStringRepresentation(q2.getGraphRepresentation()));
-        System.out.println(Similarity.getSimilarity(q1, q2, SimilarityMeasure.GRAPH_ISOMORPHY));
-        System.out.println(Similarity.getSimilarity(q1, q2, SimilarityMeasure.TYPE_AWARE_ISOMORPHY));
     }
 }

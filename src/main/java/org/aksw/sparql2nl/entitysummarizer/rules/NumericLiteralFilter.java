@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.aksw.sparql2nl.entitysummarizer.rules;
 
@@ -24,68 +24,71 @@ import java.util.Set;
  *
  */
 public class NumericLiteralFilter {
-	
-	private URIConverter conv;
-	
-	public NumericLiteralFilter(SparqlEndpoint endpoint, CacheFrontend frontend) {
-		conv = new URIConverter(endpoint, frontend);
-	}
 
-	public NumericLiteralFilter(SparqlEndpoint endpoint) {
-		conv = new URIConverter(endpoint);
-	}
+    private URIConverter conv;
+
+    public NumericLiteralFilter(SparqlEndpoint endpoint, CacheFrontend frontend) {
+        conv = new URIConverter(endpoint, frontend);
+    }
+
+    public NumericLiteralFilter(SparqlEndpoint endpoint) {
+        conv = new URIConverter(endpoint);
+    }
 //	
 //	public NumericLiteralFilter(QueryExecutionFactory qef, String cacheDirectory) {
 //		conv = new URIConverter(qef, cacheDirectory);
 //	}
-	
-	
-	public void filter(Set<Triple> triples){
-		//find triples with same subject and predicate where the object is a literal
-		Multimap<Pair<Node, String>, Triple> sp2Triples = HashMultimap.create();
-		for (Triple t : triples) {
-			if(t.getPredicate().isURI() && t.getObject().isLiteral() && isNumeric(t.getObject())){
-				sp2Triples.put(new Pair<Node, String>(t.getSubject(), conv.convert(t.getPredicate().getURI())), t);
-			}
-		}
-		Set<Triple> triples2Remove = new HashSet<Triple>();
-		
-		for (Entry<Pair<Node, String>, Collection<Triple>> entry : sp2Triples.asMap().entrySet()) {
-			Collection<Triple> literalTriples = entry.getValue();
-			
-			if(literalTriples.size() > 1){
-				Multimap<String, Triple> map = HashMultimap.create();
-				for (Triple t : literalTriples) {
-					map.put(t.getObject().getLiteralLexicalForm().replace(".", "").trim(), t);
-				}
-				
-				
-				for (Entry<String, Collection<Triple>> entry2 : map.asMap().entrySet()) {
-					Collection<Triple> sameObjectDigits = entry2.getValue();
-					if(sameObjectDigits.size() > 1){
-						Collection<Triple> keep = new HashSet<Triple>();
-						for (Triple t : sameObjectDigits) {
-							if(t.getObject().getLiteralDatatype() != null){
-								keep.add(t);
-								break;
-							}
-						}
-						if(keep.isEmpty()){
-							keep.add(sameObjectDigits.iterator().next());
-						}
-						sameObjectDigits.removeAll(keep);
-						triples2Remove.addAll(sameObjectDigits);
-					}
-				}
-			}
-		}
-		triples.removeAll(triples2Remove);
-	}
-	
-	private boolean isNumeric(Node node){
-		LiteralLabel literal = node.getLiteral();
-		String lexicalForm = literal.getLexicalForm();
-		return isNumeric(lexicalForm);
+
+    public static boolean isNumeric(String str) {
+        return str.matches("-?\\d+(\\.\\d+)?");
+    }
+
+    public void filter(Set<Triple> triples) {
+        //find triples with same subject and predicate where the object is a literal
+        Multimap<Pair<Node, String>, Triple> sp2Triples = HashMultimap.create();
+        for (Triple t : triples) {
+            if (t.getPredicate().isURI() && t.getObject().isLiteral() && isNumeric(t.getObject())) {
+                sp2Triples.put(new Pair<Node, String>(t.getSubject(), conv.convert(t.getPredicate().getURI())), t);
+            }
+        }
+        Set<Triple> triples2Remove = new HashSet<Triple>();
+
+        for (Entry<Pair<Node, String>, Collection<Triple>> entry : sp2Triples.asMap().entrySet()) {
+            Collection<Triple> literalTriples = entry.getValue();
+
+            if (literalTriples.size() > 1) {
+                Multimap<String, Triple> map = HashMultimap.create();
+                for (Triple t : literalTriples) {
+                    map.put(t.getObject().getLiteralLexicalForm().replace(".", "").trim(), t);
+                }
+
+
+                for (Entry<String, Collection<Triple>> entry2 : map.asMap().entrySet()) {
+                    Collection<Triple> sameObjectDigits = entry2.getValue();
+                    if (sameObjectDigits.size() > 1) {
+                        Collection<Triple> keep = new HashSet<Triple>();
+                        for (Triple t : sameObjectDigits) {
+                            if (t.getObject().getLiteralDatatype() != null) {
+                                keep.add(t);
+                                break;
+                            }
+                        }
+                        if (keep.isEmpty()) {
+                            keep.add(sameObjectDigits.iterator().next());
+                        }
+                        sameObjectDigits.removeAll(keep);
+                        triples2Remove.addAll(sameObjectDigits);
+                    }
+                }
+            }
+        }
+        triples.removeAll(triples2Remove);
+    }
+
+    private boolean isNumeric(Node node) {
+        LiteralLabel literal = node.getLiteral();
+        String lexicalForm = literal.getLexicalForm();
+        return isNumeric(lexicalForm);
 //		try {
 //			Integer.parseInt(lexicalForm);
 //			return true;
@@ -108,10 +111,6 @@ public class NumericLiteralFilter {
 //			}
 //		}
 //		return false;
-	}
-	
-	public static boolean isNumeric(String str) {
-		return str.matches("-?\\d+(\\.\\d+)?"); 
-	}
+    }
 
 }

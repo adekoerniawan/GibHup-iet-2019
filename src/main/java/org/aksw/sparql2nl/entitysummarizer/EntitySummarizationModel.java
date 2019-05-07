@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.aksw.sparql2nl.entitysummarizer;
 
@@ -15,25 +15,25 @@ import java.util.Set;
  */
 public class EntitySummarizationModel {
 
-	private Set<EntitySummarizationTemplate> templates;
+    private Set<EntitySummarizationTemplate> templates;
 
-	public EntitySummarizationModel(Set<EntitySummarizationTemplate> templates) {
-		this.templates = templates;
-	}
-	
-	/**
-	 * @return the templates
-	 */
-	public Set<EntitySummarizationTemplate> getTemplates() {
-		return templates;
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return Joiner.on("\n").join(templates);
-	}
+    public EntitySummarizationModel(Set<EntitySummarizationTemplate> templates) {
+        this.templates = templates;
+    }
+
+    /**
+     * @return the templates
+     */
+    public Set<EntitySummarizationTemplate> getTemplates() {
+        return templates;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return Joiner.on("\n").join(templates);
+    }
 
 }

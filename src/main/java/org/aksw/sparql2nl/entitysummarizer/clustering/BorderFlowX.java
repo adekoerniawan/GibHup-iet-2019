@@ -10,17 +10,39 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
  * @author ngonga
  */
 public class BorderFlowX implements ClusteringAlgorithm {
-	
-	private static final Logger logger = Logger.getLogger(BorderFlowX.class.getName());
+
+    private static final Logger logger = Logger.getLogger(BorderFlowX.class.getName());
 
     WeightedGraph graph;
 
     public BorderFlowX(WeightedGraph wg) {
         graph = wg;
+    }
+
+    public static void main(String args[]) {
+        WeightedGraph wg = new WeightedGraph();
+        Node n1 = wg.addNode("a", 2.0);
+        Node n2 = wg.addNode("b", 2.0);
+        Node n3 = wg.addNode("c", 2.0);
+        Node n4 = wg.addNode("d", 4.0);
+        wg.addEdge(n1, n2, 1.0);
+        wg.addEdge(n2, n3, 1.0);
+        wg.addEdge(n2, n4, 1.0);
+
+        BorderFlowX bf = new BorderFlowX(wg);
+        System.out.println(wg);
+        Set<Node> nodes = new HashSet<Node>();
+        nodes.add(n2);
+        nodes.add(n1);
+
+        System.out.println("Border = " + bf.getNeighbors(nodes));
+        System.out.println("BFR = " + bf.computeBorderFlowRatio(nodes));
+        System.out.println("Cluster = " + bf.cluster(n1));
+        System.out.println("Cluster = " + bf.cluster(n2));
+
     }
 
     public void setGraph(WeightedGraph wg) {
@@ -34,7 +56,7 @@ public class BorderFlowX implements ClusteringAlgorithm {
 
     public Set<Set<Node>> cluster() {
         Set<Set<Node>> result = new HashSet<Set<Node>>();
-        logger.debug("Graph ===\n"+graph);
+        logger.debug("Graph ===\n" + graph);
         for (Node n : graph.nodes.keySet()) {
             result.add(cluster(n));
         }
@@ -64,7 +86,7 @@ public class BorderFlowX implements ClusteringAlgorithm {
                 newBorderFlow = computeBorderFlowRatio(cluster);
             }
         } while (oldBorderFlow < newBorderFlow);
-        logger.debug("Cluster("+n.label+") = "+cluster);
+        logger.debug("Cluster(" + n.label + ") = " + cluster);
         return cluster;
     }
 
@@ -72,7 +94,7 @@ public class BorderFlowX implements ClusteringAlgorithm {
      * Computes the border flow ratio for cluster + addition. Used to check what
      * would happen if addition was inserted in the cluster
      *
-     * @param cluster A cluster
+     * @param cluster  A cluster
      * @param addition Node to be added to the cluster
      * @return Border flow ratio of cluster when addition is added to it
      */
@@ -177,6 +199,10 @@ public class BorderFlowX implements ClusteringAlgorithm {
         }
         return results;
     }
+//    private Set<Node> getCandidates(Set<Node> cluster, Set<Node> neighbors, double borderFlow) {
+//        int max = 0;
+//        
+//    }
 
     /**
      * Computes the inner nodes of a set of nodes
@@ -190,10 +216,6 @@ public class BorderFlowX implements ClusteringAlgorithm {
         innerNodes.removeAll(border);
         return innerNodes;
     }
-//    private Set<Node> getCandidates(Set<Node> cluster, Set<Node> neighbors, double borderFlow) {
-//        int max = 0;
-//        
-//    }
 
     private Set<Node> getCandidates(Set<Node> cluster, double oldBorderFlow) {
         Set<Node> neighbors = getNeighbors(cluster);
@@ -236,28 +258,5 @@ public class BorderFlowX implements ClusteringAlgorithm {
             }
         }
         return finalCandidates;
-    }
-
-    public static void main(String args[]) {
-        WeightedGraph wg = new WeightedGraph();
-        Node n1 = wg.addNode("a", 2.0);
-        Node n2 = wg.addNode("b", 2.0);
-        Node n3 = wg.addNode("c", 2.0);
-        Node n4 = wg.addNode("d", 4.0);
-        wg.addEdge(n1, n2, 1.0);
-        wg.addEdge(n2, n3, 1.0);
-        wg.addEdge(n2, n4, 1.0);
-
-        BorderFlowX bf = new BorderFlowX(wg);
-        System.out.println(wg);
-        Set<Node> nodes = new HashSet<Node>();
-        nodes.add(n2);
-        nodes.add(n1);
-        
-        System.out.println("Border = " + bf.getNeighbors(nodes));
-        System.out.println("BFR = " + bf.computeBorderFlowRatio(nodes));
-        System.out.println("Cluster = " + bf.cluster(n1));
-        System.out.println("Cluster = " + bf.cluster(n2));
-        
     }
 }

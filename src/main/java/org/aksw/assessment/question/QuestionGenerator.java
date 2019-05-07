@@ -10,10 +10,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *
  * @author ngonga
  */
 public interface QuestionGenerator {
     Set<Question> getQuestions(Map<Triple, Double> informativenessMap, int difficulty, int number);
-    
+
 }

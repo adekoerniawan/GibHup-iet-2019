@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.aksw.sparql2nl.entitysummarizer;
 
@@ -15,11 +15,11 @@ import java.io.File;
  *
  */
 public class EntitySummarizationGenerator {
-	
-	private File cacheDirectory = new File("cache");
-	private DatasetBasedGraphGenerator graphGenerator;
-	
-	private double propertyFrequencyThreshold;
+
+    private File cacheDirectory = new File("cache");
+    private DatasetBasedGraphGenerator graphGenerator;
+
+    private double propertyFrequencyThreshold;
 
 //	public EntitySummarizationGenerator(SparqlEndpoint endpoint, File cacheDirectory, double propertyFrequencyThreshold) {
 //		this.cacheDirectory  = cacheDirectory;
@@ -32,19 +32,19 @@ public class EntitySummarizationGenerator {
 //		this.cacheDirectory  = cacheDirectory;
 //		graphGenerator = new CachedDatasetBasedGraphGenerator(qef, cacheDirectory);
 //	}
-	
-	public EntitySummarization generateEntitySummarization(Resource entity){
-		//determine the most specific class of the entity
-		NamedClass cls = null;
-		
-		return generateEntitySummarization(entity, cls);
-	}
-	
-	public EntitySummarization generateEntitySummarization(Resource entity, NamedClass cls){
-		//generate a graph with the most interesting properties
-		WeightedGraph graph = graphGenerator.generateGraph(cls, propertyFrequencyThreshold);
-		
-		return null;
-	}
+
+    public EntitySummarization generateEntitySummarization(Resource entity) {
+        //determine the most specific class of the entity
+        NamedClass cls = null;
+
+        return generateEntitySummarization(entity, cls);
+    }
+
+    public EntitySummarization generateEntitySummarization(Resource entity, NamedClass cls) {
+        //generate a graph with the most interesting properties
+        WeightedGraph graph = graphGenerator.generateGraph(cls, propertyFrequencyThreshold);
+
+        return null;
+    }
 
 }

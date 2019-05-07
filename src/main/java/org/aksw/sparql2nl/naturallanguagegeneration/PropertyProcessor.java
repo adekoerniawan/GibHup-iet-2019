@@ -21,59 +21,66 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- *
  * @author ngonga
  */
 public class PropertyProcessor {
-	
+
     private static final Logger logger = Logger.getLogger(PropertyProcessor.class);
-    
+    private final String VERB_PATTERN = "^((VP)|(have NP)|(be NP P)|(be VP P)|(VP NP)).*";
+    WordNetDatabase database;
     private double threshold = 2.0;
     private Preposition preposition;
-    WordNetDatabase database;
-    
-    private final String VERB_PATTERN = "^((VP)|(have NP)|(be NP P)|(be VP P)|(VP NP)).*";
-	private StanfordCoreNLP pipeline;
-	private boolean useLinguistics = true;
+    private StanfordCoreNLP pipeline;
+    private boolean useLinguistics = true;
 
     public PropertyProcessor(String dictionary) {
         System.setProperty("wordnet.database.dir", dictionary);
         database = WordNetDatabase.getFileInstance();
         preposition = new Preposition(this.getClass().getClassLoader().getResourceAsStream("preposition_list.txt"));
-        
+
         Properties props = new Properties();
-		props.put("annotators", "tokenize, ssplit, pos, lemma, parse");
-		props.put("ssplit.isOneSentence","true");
-		pipeline = new StanfordCoreNLP(props);
+        props.put("annotators", "tokenize, ssplit, pos, lemma, parse");
+        props.put("ssplit.isOneSentence", "true");
+        pipeline = new StanfordCoreNLP(props);
     }
 
-    public enum Type {
-        VERB, NOUN, UNKNOWN;
+    public static void main(String args[]) {
+        PropertyProcessor pp = new PropertyProcessor("resources/wordnet/dict");
+        String token = "birth place";
+        System.out.println(pp.getScore(token));
+        System.out.println(pp.getType(token));
+        System.out.println(pp.getAllSynsets(token));
+        System.out.println(pp.getInfinitiveForm(token));
+        token = "has color";
+        System.out.println(pp.getType(token));
+
+        token = "was hard working";
+        System.out.println(pp.getType(token));
     }
 
     public Type getType(String property) {
-    	property = property.trim();
-    	logger.info("Getting lexicalization type for \"" + property + "\"...");
-    	
-    	Type type = getLinguisticalType(property);
-    	if(type == Type.UNKNOWN){
-    		type = getTypeByWordnet(property);
-    	}
-    	logger.info("Type("+ property + ")=" + type.name());
+        property = property.trim();
+        logger.info("Getting lexicalization type for \"" + property + "\"...");
+
+        Type type = getLinguisticalType(property);
+        if (type == Type.UNKNOWN) {
+            type = getTypeByWordnet(property);
+        }
+        logger.info("Type(" + property + ")=" + type.name());
         return type;
     }
-    
-    public Type getTypeByWordnet(String property){
-    	logger.info("...using WordNet based analysis...");
-    	
-    	 //length is > 1
+
+    public Type getTypeByWordnet(String property) {
+        logger.info("...using WordNet based analysis...");
+
+        //length is > 1
         if (property.contains(" ")) {
             String split[] = property.split(" ");
             String lastToken = split[split.length - 1];
             //first check if the ending is a preposition
             //if yes, then the type is that of the first word
             if (preposition.isPreposition(lastToken)) {
-            	String firstToken = split[0];
+                String firstToken = split[0];
                 if (getTypeByWordnet(firstToken) == Type.NOUN) {
                     return Type.NOUN;
                 } else if (getTypeByWordnet(firstToken) == Type.VERB) {
@@ -89,22 +96,22 @@ public class PropertyProcessor {
             }
         } else {
             double score = getScore(property);
-			if (score < 0) {// some count did not work
-				return Type.UNKNOWN;
-			}
-			if (score >= threshold) {
-				return Type.NOUN;
-			} else if (score < 1 / threshold) {
-				return Type.VERB;
-			} else {
-				return Type.NOUN;
-			}
+            if (score < 0) {// some count did not work
+                return Type.UNKNOWN;
+            }
+            if (score >= threshold) {
+                return Type.NOUN;
+            } else if (score < 1 / threshold) {
+                return Type.VERB;
+            } else {
+                return Type.NOUN;
+            }
         }
     }
-    
+
     public void setThreshold(double threshold) {
-		this.threshold = threshold;
-	}
+        this.threshold = threshold;
+    }
 
     /**
      * Returns log(nounCount/verbCount), i.e., positive for noun, negative for
@@ -197,82 +204,72 @@ public class PropertyProcessor {
         }
         return word;
     }
-    
-	private Type getLinguisticalType(String text) {
-		logger.info("...using linguistical analysis...");
-		Annotation document = new Annotation(text);
-		pipeline.annotate(document);
-		List<CoreMap> sentences = document.get(SentencesAnnotation.class);
 
-		String pattern = "";
-		for (CoreMap sentence : sentences) {
-			List<CoreLabel> tokens = sentence.get(TokensAnnotation.class);
-			//get the first word and check if it's 'is' or 'has'
-			CoreLabel token = tokens.get(0);
-			String word = token.get(TextAnnotation.class);
-			String pos = token.get(PartOfSpeechAnnotation.class);
-			String lemma = token.getString(LemmaAnnotation.class);
-			
-			//if first token is form for 'be' or 'has' we can return verb
-			if(lemma.equals("be") || word.equals("has")){
-				return Type.VERB;
-			}
-			
-			if(lemma.equals("be") || word.equals("have")){
-				pattern += lemma;
-			} else {
-				if(pos.startsWith("N")){
-					pattern += "NP";
-				} else if(pos.startsWith("V")){
-					pattern += "VP";
-				} else {
-					pattern += pos;
-				}
-			}
-			if(tokens.size() > 1){
-				pattern += " ";
-				for (int i = 1; i < tokens.size(); i++) {
-					token = tokens.get(i);
-					pos = token.get(PartOfSpeechAnnotation.class);
-					if(pos.startsWith("N")){
-						pattern += "NP";
-					} else if(pos.startsWith("V")){
-						pattern += "VP";
-					} else {
-						pattern += pos;
-					}
-					pattern += " ";
-				}
-			}
-			//get parse tree
-			// this is the parse tree of the current sentence
-		      Tree tree = sentence.get(TreeAnnotation.class);
-		      logger.debug("Parse tree:" + tree.pennString());
-		}
-		pattern = pattern.trim();
-		
-		//check if pattern matches
-		if(pattern.matches(VERB_PATTERN)){
-			logger.info("...successfully determined type.");
-			return Type.VERB;
-		} else {
-			logger.info("...could not determine type.");
-			return Type.UNKNOWN;
-		}
-	}
+    private Type getLinguisticalType(String text) {
+        logger.info("...using linguistical analysis...");
+        Annotation document = new Annotation(text);
+        pipeline.annotate(document);
+        List<CoreMap> sentences = document.get(SentencesAnnotation.class);
+
+        String pattern = "";
+        for (CoreMap sentence : sentences) {
+            List<CoreLabel> tokens = sentence.get(TokensAnnotation.class);
+            //get the first word and check if it's 'is' or 'has'
+            CoreLabel token = tokens.get(0);
+            String word = token.get(TextAnnotation.class);
+            String pos = token.get(PartOfSpeechAnnotation.class);
+            String lemma = token.getString(LemmaAnnotation.class);
+
+            //if first token is form for 'be' or 'has' we can return verb
+            if (lemma.equals("be") || word.equals("has")) {
+                return Type.VERB;
+            }
+
+            if (lemma.equals("be") || word.equals("have")) {
+                pattern += lemma;
+            } else {
+                if (pos.startsWith("N")) {
+                    pattern += "NP";
+                } else if (pos.startsWith("V")) {
+                    pattern += "VP";
+                } else {
+                    pattern += pos;
+                }
+            }
+            if (tokens.size() > 1) {
+                pattern += " ";
+                for (int i = 1; i < tokens.size(); i++) {
+                    token = tokens.get(i);
+                    pos = token.get(PartOfSpeechAnnotation.class);
+                    if (pos.startsWith("N")) {
+                        pattern += "NP";
+                    } else if (pos.startsWith("V")) {
+                        pattern += "VP";
+                    } else {
+                        pattern += pos;
+                    }
+                    pattern += " ";
+                }
+            }
+            //get parse tree
+            // this is the parse tree of the current sentence
+            Tree tree = sentence.get(TreeAnnotation.class);
+            logger.debug("Parse tree:" + tree.pennString());
+        }
+        pattern = pattern.trim();
+
+        //check if pattern matches
+        if (pattern.matches(VERB_PATTERN)) {
+            logger.info("...successfully determined type.");
+            return Type.VERB;
+        } else {
+            logger.info("...could not determine type.");
+            return Type.UNKNOWN;
+        }
+    }
 
 
-    public static void main(String args[]) {
-        PropertyProcessor pp = new PropertyProcessor("resources/wordnet/dict");
-        String token = "birth place";
-        System.out.println(pp.getScore(token));
-        System.out.println(pp.getType(token));
-        System.out.println(pp.getAllSynsets(token));
-        System.out.println(pp.getInfinitiveForm(token));
-        token = "has color";
-        System.out.println(pp.getType(token));
-        
-        token = "was hard working";
-        System.out.println(pp.getType(token));
+    public enum Type {
+        VERB, NOUN, UNKNOWN;
     }
 }
