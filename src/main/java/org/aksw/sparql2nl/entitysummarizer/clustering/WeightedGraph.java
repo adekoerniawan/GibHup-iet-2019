@@ -5,18 +5,12 @@
 package org.aksw.sparql2nl.entitysummarizer.clustering;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
- *
  * @author ngonga
  */
-public class WeightedGraph implements Serializable{
+public class WeightedGraph implements Serializable {
 
     Map<Node, Double> nodes;
     Map<String, Set<Node>> nodeIndex;
@@ -28,10 +22,37 @@ public class WeightedGraph implements Serializable{
         nodeIndex = new HashMap<String, Set<Node>>();
     }
 
+    public static void main(String args[]) {
+        WeightedGraph wg = new WeightedGraph();
+        WeightedGraph wg2 = new WeightedGraph();
+
+        Node n1 = wg.addNode("a", 1.0);
+        Node n2 = wg.addNode("b", 2.0);
+        Node n3 = wg.addNode("c", 3.0);
+        Node n4 = wg.addNode("d", 4.0);
+        Node n5 = new Node("e");
+
+        Node n6 = wg2.addNode("a", 1.0);
+        Node n7 = wg2.addNode("b", 3.0);
+
+        wg.addEdge(n1, n2, 2.0);
+        wg.addEdge(n3, n4, 1.0);
+        wg.addEdge(n2, n3, 2.0);
+        System.out.println(wg);
+        Set<Node> nodes = new HashSet<Node>();
+        nodes.add(n1);
+        nodes.add(n2);
+        nodes.add(n5);
+        wg.addClique(nodes);
+        System.out.println("===\n" + wg);
+        wg.minus(wg2);
+        System.out.println("===\n" + wg);
+    }
+
     /**
      * Adds a weighted node to the graph
      *
-     * @param label label of node
+     * @param label  label of node
      * @param weight weight of node
      * @return The new node
      */
@@ -44,11 +65,11 @@ public class WeightedGraph implements Serializable{
         nodeIndex.get(label).add(n);
         return n;
     }
-    
+
     /**
      * Adds a weighted node to the graph
      *
-     * @param label label of node
+     * @param label  label of node
      * @param weight weight of node
      * @return The new node
      */
@@ -75,8 +96,8 @@ public class WeightedGraph implements Serializable{
     /**
      * Adds a weighted edge to the graph
      *
-     * @param n1 Source node
-     * @param n2 Target node
+     * @param n1     Source node
+     * @param n2     Target node
      * @param weight Weight of edge
      * @return True if everything went well, false if not
      */
@@ -94,8 +115,8 @@ public class WeightedGraph implements Serializable{
     /**
      * Adds a weighted edge to the graph
      *
-     * @param n1 Source node
-     * @param n2 Target node
+     * @param n1     Source node
+     * @param n2     Target node
      * @param weight Weight of edge
      * @return True if everything went well, false if not
      */
@@ -278,32 +299,5 @@ public class WeightedGraph implements Serializable{
                 edges.get(n1).put(n2, w - g.getEdgeWeight(n1, n2));
             }
         }
-    }
-
-    public static void main(String args[]) {
-        WeightedGraph wg = new WeightedGraph();
-        WeightedGraph wg2 = new WeightedGraph();
-
-        Node n1 = wg.addNode("a", 1.0);
-        Node n2 = wg.addNode("b", 2.0);
-        Node n3 = wg.addNode("c", 3.0);
-        Node n4 = wg.addNode("d", 4.0);
-        Node n5 = new Node("e");
-
-        Node n6 = wg2.addNode("a", 1.0);
-        Node n7 = wg2.addNode("b", 3.0);
-
-        wg.addEdge(n1, n2, 2.0);
-        wg.addEdge(n3, n4, 1.0);
-        wg.addEdge(n2, n3, 2.0);
-        System.out.println(wg);
-        Set<Node> nodes = new HashSet<Node>();
-        nodes.add(n1);
-        nodes.add(n2);
-        nodes.add(n5);
-        wg.addClique(nodes);
-        System.out.println("===\n" + wg);
-        wg.minus(wg2);
-        System.out.println("===\n" + wg);
     }
 }

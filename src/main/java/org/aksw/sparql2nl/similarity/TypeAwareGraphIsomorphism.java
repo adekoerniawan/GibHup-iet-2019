@@ -4,23 +4,25 @@
  */
 package org.aksw.sparql2nl.similarity;
 
-import java.util.HashMap;
-import java.util.TreeSet;
-import java.util.regex.Pattern;
 import org.aksw.sparql2nl.queryprocessing.Query;
 import simpack.accessor.graph.SimpleGraphAccessor;
 import simpack.api.IGraphNode;
 import simpack.measure.graph.GraphIsomorphism;
 import simpack.measure.graph.SubgraphIsomorphism;
 
+import java.util.HashMap;
+import java.util.TreeSet;
+import java.util.regex.Pattern;
+
 /**
- *
  * @author ngonga
  */
 public class TypeAwareGraphIsomorphism implements QuerySimilarity {
 
-    /** Computes size of small graph isomorphism and norms it with
+    /**
+     * Computes size of small graph isomorphism and norms it with
      * size of graphs
+     *
      * @param q1 First query
      * @param q2 Second query
      * @return Similarity

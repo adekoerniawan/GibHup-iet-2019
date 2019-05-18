@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.aksw.assessment.question.informativeness;
 
@@ -11,5 +11,5 @@ import com.hp.hpl.jena.graph.Triple;
  */
 public interface InformativenessGenerator {
 
-	double computeInformativeness(Triple triple);
+    double computeInformativeness(Triple triple);
 }

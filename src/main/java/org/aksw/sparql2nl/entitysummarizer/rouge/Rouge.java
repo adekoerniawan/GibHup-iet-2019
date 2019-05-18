@@ -5,13 +5,11 @@
 package org.aksw.sparql2nl.entitysummarizer.rouge;
 
 import com.aliasi.chunk.Chunk;
-
 import com.aliasi.sentences.IndoEuropeanSentenceModel;
 import com.aliasi.sentences.SentenceChunker;
 import com.aliasi.tokenizer.IndoEuropeanTokenizerFactory;
 import com.aliasi.tokenizer.Tokenizer;
 import com.aliasi.tokenizer.TokenizerFactory;
-
 import org.aksw.sparql2nl.entitysummarizer.Verbalizer;
 import org.aksw.sparql2nl.entitysummarizer.clustering.hardening.HardeningFactory;
 import org.aksw.sparql2nl.entitysummarizer.dataset.DatasetBasedGraphGenerator;
@@ -51,26 +49,82 @@ public class Rouge {
         gram = 2;
     }
 
-    public void setBeta(double beta) {
-        if (beta > 0) {
-            this.beta = beta;
+    public static double max(double[] values) {
+        double aux = Double.MIN_VALUE;
+        for (double val : values) {
+            if (val > aux) {
+                aux = val;
+            }
         }
+        return aux;
+    }
+
+    public static double min(double[] values) {
+        double aux = Double.MAX_VALUE;
+        for (double val : values) {
+            if (val < aux) {
+                aux = val;
+            }
+        }
+        return aux;
+    }
+
+    public static double average(double[] values) {
+        if (values.length == 0) {
+            return 0;
+        }
+        double aux = 0;
+        for (double val : values) {
+            aux += val;
+        }
+        return aux / ((double) (values.length));
+    }
+
+    public static void main(String args[]) {
+        Rouge rouge = new Rouge();
+        rouge.multipleMode = MULTIPLE_MAX;
+        Verbalizer v = new Verbalizer(SparqlEndpoint.getEndpointDBpediaLiveAKSW(), "resources/wordnet");
+        Individual ind = new Individual("http://dbpedia.org/resource/Chad_Ochocinco");
+        NamedClass nc = new NamedClass("http://dbpedia.org/ontology/AmericanFootballPlayer");
+//        Resource r = ResourceFactory.createResource("http://dbpedia.org/resource/Minority_Report_(film)");
+//        NamedClass nc = new NamedClass("http://dbpedia.org/ontology/Film");
+        List<NLGElement> text = v.verbalize(ind, nc, 0.5, DatasetBasedGraphGenerator.Cooccurrence.PROPERTIES, HardeningFactory.HardeningType.AVERAGE);
+        String reference = v.realize(text);
+        String[] summaries = new String[]{"Chad Javon Ochocinco (born Chad Javon Johnson; January 9, 1978) is an American football wide receiver for the New England Patriots of the National Football League (NFL). He was drafted by the Cincinnati Bengals in the second round of the 2001 NFL Draft. He played college football at both Oregon State and Santa Monica College. He also played high school football at Miami Beach Senior High School. In April 2011, CNBC listed Ochocinco as #1 on the list of \"Most Influential Athletes In Social Media\". Ochocinco has been selected to the Pro Bowl six times and named an All-Pro three times.",
+                "Chad Javon Ochocinco (born Chad Javon Johnson; January 9, 1978) is an American football wide receiver for the New England Patriots of the National Football League (NFL). He was drafted by the Cincinnati Bengals in the second round of the 2001 NFL Draft. He played college football at both Oregon State and Santa Monica College. He also played high school football at Miami Beach Senior High School."};
+
+        rouge.evaluate(reference, summaries);
+//        for (int i = 0; i < rouge.evaStat.length; i++) {
+//            for (int j = 0; j < rouge.evaStat[i].length; j++) {
+//                System.out.print(rouge.evaStat[i][j] + "\t");
+//            }
+//            System.out.println();
+//        }
+        System.out.println(rouge.getPrecision());
+        System.out.println(rouge.getRecall());
+        System.out.println(rouge.getFScore());
     }
 
     public double getBeta() {
         return beta;
     }
 
+    public void setBeta(double beta) {
+        if (beta > 0) {
+            this.beta = beta;
+        }
+    }
+
     public void setMultipleReferenceMode(int mode) {
         this.multipleMode = mode;
     }
 
-    public void setCaseOption(boolean sensitive) {
-        caseSensitive = sensitive;
-    }
-
     public boolean getCaseOption() {
         return caseSensitive;
+    }
+
+    public void setCaseOption(boolean sensitive) {
+        caseSensitive = sensitive;
     }
 
     public void useRougeN(int gram) {
@@ -102,37 +156,6 @@ public class Rouge {
 
     public double getFScore() {
         return getEvaResult(2);
-    }
-
-    public static double max(double[] values) {
-        double aux = Double.MIN_VALUE;
-        for (double val : values) {
-            if (val > aux) {
-                aux = val;
-            }
-        }
-        return aux;
-    }
-
-    public static double min(double[] values) {
-        double aux = Double.MAX_VALUE;
-        for (double val : values) {
-            if (val < aux) {
-                aux = val;
-            }
-        }
-        return aux;
-    }
-
-    public static double average(double[] values) {
-        if (values.length == 0) {
-            return 0;
-        }
-        double aux = 0;
-        for (double val : values) {
-            aux += val;
-        }
-        return aux / ((double) (values.length));
     }
 
     private double getEvaResult(int dimension) {
@@ -463,31 +486,6 @@ public class Rouge {
             return (1 + beta * beta) * precision * recall
                     / (recall + beta * beta * precision);
         }
-    }
-
-    public static void main(String args[]) {
-        Rouge rouge = new Rouge();
-        rouge.multipleMode = MULTIPLE_MAX;
-        Verbalizer v = new Verbalizer(SparqlEndpoint.getEndpointDBpediaLiveAKSW(),"resources/wordnet");
-        Individual ind = new Individual("http://dbpedia.org/resource/Chad_Ochocinco");
-        NamedClass nc = new NamedClass("http://dbpedia.org/ontology/AmericanFootballPlayer");
-//        Resource r = ResourceFactory.createResource("http://dbpedia.org/resource/Minority_Report_(film)");
-//        NamedClass nc = new NamedClass("http://dbpedia.org/ontology/Film");
-        List<NLGElement> text = v.verbalize(ind, nc, 0.5, DatasetBasedGraphGenerator.Cooccurrence.PROPERTIES, HardeningFactory.HardeningType.AVERAGE);
-        String reference = v.realize(text);
-        String[] summaries = new String[]{"Chad Javon Ochocinco (born Chad Javon Johnson; January 9, 1978) is an American football wide receiver for the New England Patriots of the National Football League (NFL). He was drafted by the Cincinnati Bengals in the second round of the 2001 NFL Draft. He played college football at both Oregon State and Santa Monica College. He also played high school football at Miami Beach Senior High School. In April 2011, CNBC listed Ochocinco as #1 on the list of \"Most Influential Athletes In Social Media\". Ochocinco has been selected to the Pro Bowl six times and named an All-Pro three times.",
-            "Chad Javon Ochocinco (born Chad Javon Johnson; January 9, 1978) is an American football wide receiver for the New England Patriots of the National Football League (NFL). He was drafted by the Cincinnati Bengals in the second round of the 2001 NFL Draft. He played college football at both Oregon State and Santa Monica College. He also played high school football at Miami Beach Senior High School."};
-
-        rouge.evaluate(reference, summaries);
-//        for (int i = 0; i < rouge.evaStat.length; i++) {
-//            for (int j = 0; j < rouge.evaStat[i].length; j++) {
-//                System.out.print(rouge.evaStat[i][j] + "\t");
-//            }
-//            System.out.println();
-//        }
-        System.out.println(rouge.getPrecision());
-        System.out.println(rouge.getRecall());
-        System.out.println(rouge.getFScore());
     }
 }
 

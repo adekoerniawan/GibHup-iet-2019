@@ -8,26 +8,25 @@ import com.google.common.collect.Multimap;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
-import java.util.*;
-import java.util.Map.Entry;
-
-import org.dllearner.core.owl.Property;
 import org.aksw.sparql2nl.entitysummarizer.SPARQLQueryProcessor;
 import org.aksw.sparql2nl.entitysummarizer.clustering.Node;
 import org.aksw.sparql2nl.entitysummarizer.clustering.WeightedGraph;
 import org.dllearner.core.owl.NamedClass;
+import org.dllearner.core.owl.Property;
 import org.dllearner.kb.SparqlEndpointKS;
 import org.dllearner.kb.sparql.SparqlEndpoint;
 import org.dllearner.reasoning.SPARQLReasoner;
 
+import java.util.*;
+import java.util.Map.Entry;
+
 /**
- *
  * @author ngonga
  */
 public class Controller {
 
-    public static boolean selectQueriesWithEmptyResults = true;
     private static final String testFile = "resources/dbpediaLog/dbpedia.log-valid-select-nonjava.gz";
+    public static boolean selectQueriesWithEmptyResults = true;
 
     /**
      * Generates the weighted graph for a given class
@@ -61,7 +60,7 @@ public class Controller {
      * Generates the weighted graph for a given class
      *
      * @param ontClass Named Class
-     * @param entries List of log entries (e.g., from a dump file)
+     * @param entries  List of log entries (e.g., from a dump file)
      * @return Weighted Graph
      */
     public static WeightedGraph generateGraph(NamedClass ontClass, List<LogEntry> entries) {
@@ -98,7 +97,7 @@ public class Controller {
      * Generates the weighted graph for a given class
      *
      * @param ontClass Named Class
-     * @param entries List of log entries (e.g., from a dump file)
+     * @param entries  List of log entries (e.g., from a dump file)
      * @return Weighted Graph
      */
     public static WeightedGraph generateGraphMultithreaded(NamedClass ontClass, Collection<Map<NamedClass, Set<Property>>> result) {
@@ -166,9 +165,10 @@ public class Controller {
 
     /**
      * Generates the weighted graph for a given class
-     *System.out.println("Reference Graph =============== ");
-//            System.out.println("Edges = " + reference);
-//            System.
+     * System.out.println("Reference Graph =============== ");
+     * //            System.out.println("Edges = " + reference);
+     * //            System.
+     *
      * @param entries List of log entries (e.g., from a dump file)
      * @return Weighted Graph
      */
@@ -176,9 +176,9 @@ public class Controller {
         WeightedGraph wg = new WeightedGraph();
         int count = 0;
         //feed data into the processor and then into the graph
-       
+
         for (Map<NamedClass, Set<Property>> map : result) {
-        	count++;
+            count++;
             for (NamedClass ontClass : map.keySet()) {
                 Set<Property> properties = map.get(ontClass);
                 Set<Node> nodes = new HashSet<Node>();
@@ -205,26 +205,26 @@ public class Controller {
         testDumpReader();
 //        testSPARQLQueryProcessor();
     }
-    
-	public static void testSPARQLQueryProcessor() {
-		SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
-		SPARQLQueryProcessor queryProcessor = new SPARQLQueryProcessor(endpoint);
-		DBpediaDumpProcessor dp = new DBpediaDumpProcessor();
-		List<LogEntry> entries = dp.processDump(testFile, false, 20000);
-		
-		// group by IP address
-		Multimap<String, LogEntry> ip2Entries = LogEntryGrouping.groupByIPAddress(entries);
-		System.out.println("#IP addresses: " + ip2Entries.keySet().size());
-		
-		// group by user agent
-		Multimap<String, LogEntry> userAgent2Entries = LogEntryGrouping.groupByUserAgent(entries);
-		System.out.println("#User agent: " + userAgent2Entries.keySet().size());
-		
-		for (Entry<String, Collection<LogEntry>> entry : userAgent2Entries.asMap().entrySet()) {
-			String userAgent = entry.getKey();
-			Collection<LogEntry> entriesForUserAgent = entry.getValue();
-			System.out.println(userAgent + ": " + entriesForUserAgent.size());
-		}
+
+    public static void testSPARQLQueryProcessor() {
+        SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
+        SPARQLQueryProcessor queryProcessor = new SPARQLQueryProcessor(endpoint);
+        DBpediaDumpProcessor dp = new DBpediaDumpProcessor();
+        List<LogEntry> entries = dp.processDump(testFile, false, 20000);
+
+        // group by IP address
+        Multimap<String, LogEntry> ip2Entries = LogEntryGrouping.groupByIPAddress(entries);
+        System.out.println("#IP addresses: " + ip2Entries.keySet().size());
+
+        // group by user agent
+        Multimap<String, LogEntry> userAgent2Entries = LogEntryGrouping.groupByUserAgent(entries);
+        System.out.println("#User agent: " + userAgent2Entries.keySet().size());
+
+        for (Entry<String, Collection<LogEntry>> entry : userAgent2Entries.asMap().entrySet()) {
+            String userAgent = entry.getKey();
+            Collection<LogEntry> entriesForUserAgent = entry.getValue();
+            System.out.println(userAgent + ": " + entriesForUserAgent.size());
+        }
 
 //		for (Entry<String, Collection<LogEntry>> entry : ip2Entries.asMap().entrySet()) {
 //			String ip = entry.getKey();
@@ -238,7 +238,7 @@ public class Controller {
 //				System.out.println(result);
 //			}
 //		}
-	}
+    }
 
     public static void testDumpReader() {
         SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
@@ -250,8 +250,8 @@ public class Controller {
         List<LogEntry> entries = dp.processDump(testFile, false);
         Collection<Map<NamedClass, Set<Property>>> result = processor.processEntries(entries);
         WeightedGraph reference = Controller.generateGraphMultithreaded(result);
-        for(NamedClass nc : new SPARQLReasoner(new SparqlEndpointKS(endpoint)).getOWLClasses()){
-        	 WeightedGraph wg = Controller.generateGraphMultithreaded(nc, result);
+        for (NamedClass nc : new SPARQLReasoner(new SparqlEndpointKS(endpoint)).getOWLClasses()) {
+            WeightedGraph wg = Controller.generateGraphMultithreaded(nc, result);
             System.out.println("\n\nBasic Graph =============== ");
             System.out.println("Edges = " + wg);
             System.out.println("Nodes = " + wg.getNodes());

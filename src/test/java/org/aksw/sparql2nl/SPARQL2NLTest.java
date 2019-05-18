@@ -9,9 +9,7 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.Syntax;
 import org.aksw.sparql2nl.naturallanguagegeneration.SimpleNLGwithPostprocessing;
 import org.dllearner.kb.sparql.SparqlEndpoint;
-import org.junit.Test;
 import simplenlg.lexicon.Lexicon;
-import simplenlg.lexicon.NIHDBLexicon;
 
 import java.net.URL;
 

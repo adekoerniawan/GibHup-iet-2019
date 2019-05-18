@@ -4,22 +4,24 @@
  */
 package org.aksw.sparql2nl.entitysummarizer.clustering.hardening;
 
-import java.util.Set;
 import org.aksw.sparql2nl.entitysummarizer.clustering.Node;
 import org.aksw.sparql2nl.entitysummarizer.clustering.WeightedGraph;
 
+import java.util.Set;
+
 /**
  * Harderning that prefers clusters with higher average weight
+ *
  * @author ngonga
  */
 public class AverageWeightClusterHardening extends LargestClusterHardening {
-    
+
     /**
      * Computes the weight of a cluster w.r.t. to a given set of nodes within a
      * weighted graph
      *
-     * @param cluster A cluster
-     * @param wg A node- and edge-weighted graph
+     * @param cluster   A cluster
+     * @param wg        A node- and edge-weighted graph
      * @param reference
      * @return Weight of the set of nodes
      */
@@ -40,7 +42,7 @@ public class AverageWeightClusterHardening extends LargestClusterHardening {
                 }
             }
         }
-        return w/(cluster.size()*cluster.size());        
+        return w / (cluster.size() * cluster.size());
     }
 
 }

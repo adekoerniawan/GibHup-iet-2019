@@ -4,13 +4,9 @@
  */
 package org.aksw.assessment.question;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import org.aksw.sparql2nl.entitysummarizer.Verbalizer;
 import org.aksw.sparql2nl.entitysummarizer.clustering.BorderFlowX;
 import org.aksw.sparql2nl.entitysummarizer.clustering.Node;
@@ -27,27 +23,26 @@ import simplenlg.framework.CoordinatedPhraseElement;
 import simplenlg.framework.NLGElement;
 import simplenlg.phrasespec.NPPhraseSpec;
 import simplenlg.phrasespec.SPhraseSpec;
-import com.hp.hpl.jena.graph.Triple;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
+
+import java.util.*;
 
 /**
  * Extension of Avatar for verbalizing jeopardy questions.
+ *
  * @author ngonga
  */
 public class JeopardyVerbalizer extends Verbalizer {
-	
-	private static final Logger logger = Logger.getLogger(JeopardyVerbalizer.class.getName());
-    
-	public JeopardyVerbalizer(SparqlEndpoint endpoint, String cacheDirectory, String wordnetDirectory) {
-		super(endpoint, wordnetDirectory);
-	}
-    
 
-    
-     public Map<Individual, List<NLGElement>> verbalize(Set<Individual> individuals, NamedClass nc, double threshold, DatasetBasedGraphGenerator.Cooccurrence cooccurrence, HardeningFactory.HardeningType hType) {
+    private static final Logger logger = Logger.getLogger(JeopardyVerbalizer.class.getName());
+
+    public JeopardyVerbalizer(SparqlEndpoint endpoint, String cacheDirectory, String wordnetDirectory) {
+        super(endpoint, wordnetDirectory);
+    }
+
+
+    public Map<Individual, List<NLGElement>> verbalize(Set<Individual> individuals, NamedClass nc, double threshold, DatasetBasedGraphGenerator.Cooccurrence cooccurrence, HardeningFactory.HardeningType hType) {
         resource2Triples = new HashMap<Resource, Collection<Triple>>();
-        
+
         //first get graph for class
         WeightedGraph wg = graphGenerator.generateGraph(nc, threshold, "http://dbpedia.org/ontology/", cooccurrence);
 
@@ -58,8 +53,8 @@ public class JeopardyVerbalizer extends Verbalizer {
         List<Set<Node>> sortedPropertyClusters = HardeningFactory.getHardening(hType).harden(clusters, wg);
         logger.info("Clusters:");
         for (Set<Node> cluster : sortedPropertyClusters) {
-			logger.info(cluster);
-		}
+            logger.info(cluster);
+        }
 
         Map<Individual, List<NLGElement>> verbalizations = new HashMap<Individual, List<NLGElement>>();
 
@@ -78,8 +73,8 @@ public class JeopardyVerbalizer extends Verbalizer {
 
         return verbalizations;
     }
-     
-     
+
+
     @Override
     public List<NPPhraseSpec> generateSubjects(Resource resource, NamedClass nc, Gender g) {
         List<NPPhraseSpec> result = new ArrayList<>();
@@ -95,7 +90,7 @@ public class JeopardyVerbalizer extends Verbalizer {
         }
         return result;
     }
-    
+
     @Override
     protected NLGElement replaceSubject(NLGElement phrase, List<NPPhraseSpec> subjects, Gender g) {
         SPhraseSpec sphrase;
@@ -146,5 +141,5 @@ public class JeopardyVerbalizer extends Verbalizer {
         }
         return phrase;
     }
-    
+
 }

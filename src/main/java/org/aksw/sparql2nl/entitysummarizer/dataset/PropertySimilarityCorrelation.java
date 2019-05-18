@@ -6,15 +6,15 @@ package org.aksw.sparql2nl.entitysummarizer.dataset;
 
 import com.google.common.collect.Sets;
 import com.hp.hpl.jena.query.ResultSet;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 import org.dllearner.core.owl.NamedClass;
 import org.dllearner.core.owl.ObjectProperty;
 import uk.ac.shef.wit.simmetrics.similaritymetrics.QGramsDistance;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
- *
  * @author ngonga
  */
 public class PropertySimilarityCorrelation {

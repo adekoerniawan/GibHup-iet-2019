@@ -1,19 +1,13 @@
 package org.aksw.sparql2nl.entitysummarizer;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
+import com.google.common.base.Joiner;
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.Syntax;
+import com.hp.hpl.jena.sparql.core.Var;
+import com.hp.hpl.jena.vocabulary.RDF;
 import org.aksw.sparql2nl.entitysummarizer.dump.LogEntry;
 import org.aksw.sparql2nl.queryprocessing.TriplePatternExtractor;
 import org.dllearner.core.owl.Individual;
@@ -25,14 +19,8 @@ import org.dllearner.kb.sparql.ExtractionDBCache;
 import org.dllearner.kb.sparql.SparqlEndpoint;
 import org.dllearner.reasoning.SPARQLReasoner;
 
-import com.google.common.base.Joiner;
-import com.hp.hpl.jena.graph.Node;
-import com.hp.hpl.jena.graph.Triple;
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.Syntax;
-import com.hp.hpl.jena.sparql.core.Var;
-import com.hp.hpl.jena.vocabulary.RDF;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class SPARQLQueryProcessor {
 
@@ -43,6 +31,39 @@ public class SPARQLQueryProcessor {
     public SPARQLQueryProcessor(SparqlEndpoint endpoint) {
         this.endpoint = endpoint;
         reasoner = new SPARQLReasoner(new SparqlEndpointKS(endpoint), new ExtractionDBCache("cache"));
+    }
+
+    public static void main(String[] args) throws Exception {
+        SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
+        SPARQLQueryProcessor processor = new SPARQLQueryProcessor(endpoint);
+
+        Query query = QueryFactory.create(
+                "PREFIX dbr: <http://dbpedia.org/resource/> "
+                        + "PREFIX dbo: <http://dbpedia.org/ontology/> "
+                        + "SELECT ?s ?place ?date WHERE {?s a dbo:Person. ?s dbo:birthPlace ?place. ?s dbo:birthDate ?date.}");
+        Map<NamedClass, Set<Property>> occurrences = processor.processQuery(query);
+        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
+
+        query = QueryFactory.create(
+                "PREFIX dbr: <http://dbpedia.org/resource/> "
+                        + "PREFIX dbo: <http://dbpedia.org/ontology/> "
+                        + "SELECT ?place ?date WHERE {?s a dbo:Person. ?s dbo:birthPlace ?place. ?s dbo:birthDate ?date.}");
+        occurrences = processor.processQuery(query);
+        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
+
+        query = QueryFactory.create(
+                "PREFIX dbr: <http://dbpedia.org/resource/> "
+                        + "PREFIX dbo: <http://dbpedia.org/ontology/> "
+                        + "SELECT ?place ?date WHERE {dbr:Brad_Pitt dbo:birthPlace ?place. dbr:Brad_Pitt dbo:birthDate ?date.}");
+        occurrences = processor.processQuery(query);
+        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
+
+        query = QueryFactory.create(
+                "PREFIX dbr: <http://dbpedia.org/resource/> "
+                        + "PREFIX dbo: <http://dbpedia.org/ontology/> "
+                        + "SELECT ?s ?place ?date WHERE {?s a dbo:Book. ?o dbo:birthPlace ?place. ?o dbo:birthDate ?date.}");
+        occurrences = processor.processQuery(query);
+        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
     }
 
     public Map<NamedClass, Set<Property>> processQuery(String query) {
@@ -75,21 +96,22 @@ public class SPARQLQueryProcessor {
 
         return result;
     }
-    
+
     /**
      * Each log entry is processed by getting classes with its used properties.
+     *
      * @param entries
      * @return
      */
     public Collection<Map<NamedClass, Set<Property>>> processEntries(Collection<LogEntry> entries) {
-    	List<Query> queries = new ArrayList<Query>();
+        List<Query> queries = new ArrayList<Query>();
 //    	Set<String> blacklist = Sets.newHashSet("-", "bliss", "ARC" , "[CURL]");
-    	for (LogEntry entry : entries) {
-    		queries.add(entry.getSparqlQuery());
+        for (LogEntry entry : entries) {
+            queries.add(entry.getSparqlQuery());
 //    		if(!blacklist.contains(entry.userAgent)){
-//    			
+//
 //    		}
-		}
+        }
         return processQueries(queries);
     }
 
@@ -106,7 +128,7 @@ public class SPARQLQueryProcessor {
         List<Var> vars = query.getProjectVars();
 
         //we have to filter out variables which are the subject of a rdf:type statement
-        for (Iterator<Var> iterator = vars.iterator(); iterator.hasNext();) {
+        for (Iterator<Var> iterator = vars.iterator(); iterator.hasNext(); ) {
             Var var = iterator.next();
             //get all outgoing triple patterns
             Set<Triple> outgoingTriplePatterns = patternExtractor.extractOutgoingTriplePatterns(query, var);
@@ -159,38 +181,5 @@ public class SPARQLQueryProcessor {
             }
         }
         return result;
-    }
-
-    public static void main(String[] args) throws Exception {
-        SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
-        SPARQLQueryProcessor processor = new SPARQLQueryProcessor(endpoint);
-
-        Query query = QueryFactory.create(
-                "PREFIX dbr: <http://dbpedia.org/resource/> "
-                + "PREFIX dbo: <http://dbpedia.org/ontology/> "
-                + "SELECT ?s ?place ?date WHERE {?s a dbo:Person. ?s dbo:birthPlace ?place. ?s dbo:birthDate ?date.}");
-        Map<NamedClass, Set<Property>> occurrences = processor.processQuery(query);
-        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
-
-        query = QueryFactory.create(
-                "PREFIX dbr: <http://dbpedia.org/resource/> "
-                + "PREFIX dbo: <http://dbpedia.org/ontology/> "
-                + "SELECT ?place ?date WHERE {?s a dbo:Person. ?s dbo:birthPlace ?place. ?s dbo:birthDate ?date.}");
-        occurrences = processor.processQuery(query);
-        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
-
-        query = QueryFactory.create(
-                "PREFIX dbr: <http://dbpedia.org/resource/> "
-                + "PREFIX dbo: <http://dbpedia.org/ontology/> "
-                + "SELECT ?place ?date WHERE {dbr:Brad_Pitt dbo:birthPlace ?place. dbr:Brad_Pitt dbo:birthDate ?date.}");
-        occurrences = processor.processQuery(query);
-        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
-
-        query = QueryFactory.create(
-                "PREFIX dbr: <http://dbpedia.org/resource/> "
-                + "PREFIX dbo: <http://dbpedia.org/ontology/> "
-                + "SELECT ?s ?place ?date WHERE {?s a dbo:Book. ?o dbo:birthPlace ?place. ?o dbo:birthDate ?date.}");
-        occurrences = processor.processQuery(query);
-        System.out.println(Joiner.on("\n").withKeyValueSeparator("=").join(occurrences));
     }
 }

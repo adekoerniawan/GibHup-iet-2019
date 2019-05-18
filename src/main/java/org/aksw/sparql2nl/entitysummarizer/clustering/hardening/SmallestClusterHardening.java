@@ -5,19 +5,21 @@
 package org.aksw.sparql2nl.entitysummarizer.clustering.hardening;
 
 import com.google.common.collect.Lists;
+import org.aksw.sparql2nl.entitysummarizer.clustering.Node;
+import org.aksw.sparql2nl.entitysummarizer.clustering.WeightedGraph;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.aksw.sparql2nl.entitysummarizer.clustering.Node;
-import org.aksw.sparql2nl.entitysummarizer.clustering.WeightedGraph;
 
 /**
  * Hardening that prefers clusters with smaller weights
+ *
  * @author ngonga
  */
-public class SmallestClusterHardening extends LargestClusterHardening{
-     public List<Set<Node>> harden(Set<Set<Node>> clusters, WeightedGraph wg) {
+public class SmallestClusterHardening extends LargestClusterHardening {
+    public List<Set<Node>> harden(Set<Set<Node>> clusters, WeightedGraph wg) {
         Set<Node> nodes = new HashSet<Node>(wg.getNodes().keySet());
         double min, weight;
         Set<Node> bestCluster;

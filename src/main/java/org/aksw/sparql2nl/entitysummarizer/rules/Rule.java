@@ -4,14 +4,15 @@
  */
 package org.aksw.sparql2nl.entitysummarizer.rules;
 
-import java.util.List;
 import simplenlg.phrasespec.SPhraseSpec;
 
+import java.util.List;
+
 /**
- *
  * @author ngonga
  */
 public interface Rule {
     public int isApplicable(List<SPhraseSpec> phrases);
+
     public List<SPhraseSpec> apply(List<SPhraseSpec> phrases);
 }

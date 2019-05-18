@@ -4,38 +4,23 @@
  */
 package org.aksw.sparql2nl.naturallanguagegeneration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import simplenlg.features.Feature;
-import simplenlg.features.Tense;
-import simplenlg.framework.CoordinatedPhraseElement;
-import simplenlg.framework.DocumentElement;
-import simplenlg.framework.NLGElement;
-import simplenlg.framework.NLGFactory;
-import simplenlg.framework.PhraseElement;
-import simplenlg.lexicon.Lexicon;
-import simplenlg.phrasespec.NPPhraseSpec;
-import simplenlg.phrasespec.SPhraseSpec;
-import simplenlg.realiser.english.Realiser;
-
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.sparql.expr.E_Regex;
 import com.hp.hpl.jena.sparql.expr.Expr;
-import com.hp.hpl.jena.sparql.syntax.Element;
-import com.hp.hpl.jena.sparql.syntax.ElementFilter;
-import com.hp.hpl.jena.sparql.syntax.ElementGroup;
-import com.hp.hpl.jena.sparql.syntax.ElementPathBlock;
-import com.hp.hpl.jena.sparql.syntax.ElementUnion;
+import com.hp.hpl.jena.sparql.syntax.*;
+import simplenlg.features.Feature;
+import simplenlg.features.Tense;
+import simplenlg.framework.*;
+import simplenlg.lexicon.Lexicon;
+import simplenlg.phrasespec.NPPhraseSpec;
+import simplenlg.phrasespec.SPhraseSpec;
+import simplenlg.realiser.english.Realiser;
+
+import java.util.*;
 
 /**
- *
  * @author ngonga
  */
 public class GenericNLG implements Sparql2NLConverter {
@@ -50,8 +35,36 @@ public class GenericNLG implements Sparql2NLConverter {
         realiser = new Realiser(lexicon);
     }
 
-    /** Takes a DBPedia class and returns the correct label for it
-     * 
+    public static void tenseTest() {
+        GenericNLG gnlg = new GenericNLG();
+        SPhraseSpec p = gnlg.nlgFactory.createClause();
+        p.setSubject("This query");
+        p.setVerb("was born in");
+        p.setObject("Cameroon");
+        //p.setFeature(Feature.TENSE, Feature.PERFECT);
+        p.setFeature(Feature.TENSE, Tense.PAST);
+        System.out.println(gnlg.realiser.realiseSentence(p));
+    }
+
+    public static void test() {
+        Map<String, Set<String>> typeMap = new HashMap<String, Set<String>>();
+        String s = "x";
+        HashSet type = new HashSet();
+        type.add("Person");
+        //type.add("Village");
+        typeMap.put(s, type);
+
+        s = "y";
+        type = new HashSet();
+        type.add("City");
+        //type.add("Village");
+        typeMap.put(s, type);
+        (new GenericNLG()).generateNL(typeMap, null);
+    }
+
+    /**
+     * Takes a DBPedia class and returns the correct label for it
+     *
      * @param className Name of a class
      * @return Label
      */
@@ -69,7 +82,7 @@ public class GenericNLG implements Sparql2NLConverter {
         p.setVerb("retrieve");
         List<NPPhraseSpec> objects = new ArrayList<NPPhraseSpec>();
 
-        //process the type information to create the object(s)    
+        //process the type information to create the object(s)
         for (String s : typeMap.keySet()) {
             // contains the objects to the sentence
             NPPhraseSpec object = nlgFactory.createNounPhrase(s);
@@ -134,8 +147,9 @@ public class GenericNLG implements Sparql2NLConverter {
         return p;
     }
 
-    /** Generate a verb for a predicate
-     * 
+    /**
+     * Generate a verb for a predicate
+     *
      * @param predicate Node containing the predicate for which the NL is to be generated
      * @return predicate as String
      */
@@ -144,11 +158,13 @@ public class GenericNLG implements Sparql2NLConverter {
         //throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    /** Processes a list of elements. These can be elements of the where clause or 
+    /**
+     * Processes a list of elements. These can be elements of the where clause or
      * of an optional clause
+     *
      * @param e List of query elements
      * @return Conjunctive natural representation of the list of elements.
-     */    
+     */
     public NLGElement getNLFromElements(List<Element> e) {
 
         if (e.isEmpty()) {
@@ -157,11 +173,11 @@ public class GenericNLG implements Sparql2NLConverter {
         if (e.size() == 1) {
             return getNLFromSingleClause(e.get(0));
         } else {
-            CoordinatedPhraseElement cpe;            
+            CoordinatedPhraseElement cpe;
             cpe = nlgFactory.createCoordinatedPhrase(getNLFromSingleClause(e.get(0)), getNLFromSingleClause(e.get(1)));
-            for (int i = 2; i < e.size(); i++) {                
-                cpe.addCoordinate(getNLFromSingleClause(e.get(i)));                
-            }            
+            for (int i = 2; i < e.size(); i++) {
+                cpe.addCoordinate(getNLFromSingleClause(e.get(i)));
+            }
             cpe.setConjunction("and");
             return cpe;
         }
@@ -225,33 +241,6 @@ public class GenericNLG implements Sparql2NLConverter {
             return p;
         }
         return null;
-    }
-
-    public static void tenseTest() {
-        GenericNLG gnlg = new GenericNLG();
-        SPhraseSpec p = gnlg.nlgFactory.createClause();
-        p.setSubject("This query");
-        p.setVerb("was born in");
-        p.setObject("Cameroon");
-        //p.setFeature(Feature.TENSE, Feature.PERFECT);
-        p.setFeature(Feature.TENSE, Tense.PAST);
-        System.out.println(gnlg.realiser.realiseSentence(p));
-    }
-
-    public static void test() {
-        Map<String, Set<String>> typeMap = new HashMap<String, Set<String>>();
-        String s = "x";
-        HashSet type = new HashSet();
-        type.add("Person");
-        //type.add("Village");
-        typeMap.put(s, type);
-
-        s = "y";
-        type = new HashSet();
-        type.add("City");
-        //type.add("Village");
-        typeMap.put(s, type);
-        (new GenericNLG()).generateNL(typeMap, null);
     }
 
     public String getNLR(com.hp.hpl.jena.query.Query query) {

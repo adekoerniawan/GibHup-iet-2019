@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
  * @author ngonga
  */
 public class Preposition {
@@ -33,9 +32,8 @@ public class Preposition {
             e.printStackTrace();
         }
     }
-    
-    public boolean isPreposition(String s)
-    {
+
+    public boolean isPreposition(String s) {
         return set.contains(s);
     }
 }
