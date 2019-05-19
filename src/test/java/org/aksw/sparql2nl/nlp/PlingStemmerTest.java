@@ -12,7 +12,7 @@ public class PlingStemmerTest {
 
     @Before
     public void initStemmer() {
-        stemmer = new PlingStemmer();;
+        stemmer = new PlingStemmer();
     }
 
     /**
