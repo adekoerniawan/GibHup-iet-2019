@@ -87,7 +87,7 @@ public class PlingStemmerTest {
     @Test
     public void testStemForPlural() {
         PlingStemmer stemmer = new PlingStemmer();
-        String result = stemmer.stem("statistics");
+        String result = stemmer.stem("houses");
         Assert.assertEquals("house", result);
     }
 
