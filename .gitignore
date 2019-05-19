@@ -1,12 +1,11 @@
 .classpath
 .project
 .settings/**/*
-target/**/*
 log/*
 .DS_Store
 .settings/*
 *.lsq
-/target/
+/target
 
 .idea
 /sparql2nl.iml
