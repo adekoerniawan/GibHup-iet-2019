@@ -19,7 +19,7 @@ public class LexiconBasedGenderDetector implements GenderDetector {
     private Set<String> male;
     private Set<String> female;
 
-    LexiconBasedGenderDetector(Set<String> male, Set<String> female) {
+    public LexiconBasedGenderDetector(Set<String> male, Set<String> female) {
         this.male = male;
         this.female = female;
     }
@@ -87,14 +87,14 @@ public class LexiconBasedGenderDetector implements GenderDetector {
     /**
      * @param maleNamesPath the maleNamesPath to set
      */
-    void setMaleNamesPath(String maleNamesPath) {
+    public void setMaleNamesPath(String maleNamesPath) {
         this.maleNamesPath = maleNamesPath;
     }
 
     /**
      * @param femaleNamesPath the femaleNamesPath to set
      */
-    void setFemaleNamesPath(String femaleNamesPath) {
+    public void setFemaleNamesPath(String femaleNamesPath) {
         this.femaleNamesPath = femaleNamesPath;
     }
 }
