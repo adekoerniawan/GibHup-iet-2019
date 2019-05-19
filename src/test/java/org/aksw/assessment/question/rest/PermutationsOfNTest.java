@@ -1,15 +1,12 @@
 package org.aksw.assessment.question.rest;
 
-import eu.trowl.util.Log;
-import opennlp.tools.util.HashList;
-import org.aksw.assessment.question.PermutationsOfN;
-import org.apache.xalan.xsltc.util.IntegerArray;
-import org.junit.Test;
 
+import org.aksw.assessment.question.PermutationsOfN;
+import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
+
 
 public class PermutationsOfNTest
 {
