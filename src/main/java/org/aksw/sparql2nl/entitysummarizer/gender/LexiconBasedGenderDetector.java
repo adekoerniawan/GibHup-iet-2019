@@ -1,6 +1,4 @@
-/**
- *
- */
+
 package org.aksw.sparql2nl.entitysummarizer.gender;
 
 import java.io.BufferedReader;
@@ -28,10 +26,11 @@ public class LexiconBasedGenderDetector implements GenderDetector {
 
     public LexiconBasedGenderDetector() {
         try {
-            male = new HashSet<String>();
-            female = new HashSet<String>();
+            male = new HashSet<>();
+            female = new HashSet<>();
 
             InputStream is = this.getClass().getClassLoader().getResourceAsStream(maleNamesPath);
+            assert is != null;
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String l;
             while ((l = br.readLine()) != null) {
@@ -43,6 +42,7 @@ public class LexiconBasedGenderDetector implements GenderDetector {
             br.close();
 
             is = this.getClass().getClassLoader().getResourceAsStream(femaleNamesPath);
+            assert is != null;
             br = new BufferedReader(new InputStreamReader(is));
             while ((l = br.readLine()) != null) {
                 l = l.trim();
@@ -57,7 +57,7 @@ public class LexiconBasedGenderDetector implements GenderDetector {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         LexiconBasedGenderDetector genderDetector = new LexiconBasedGenderDetector();
         System.out.println(genderDetector.getGender("Zinedine Ngonga"));
     }
@@ -77,7 +77,7 @@ public class LexiconBasedGenderDetector implements GenderDetector {
 
         if (male.contains(searchName)) {
             return Gender.MALE;
-        } else if (female.contains(name)) {
+        } else if (female.contains(searchName)) {
             return Gender.FEMALE;
         } else {
             return Gender.UNKNOWN;
