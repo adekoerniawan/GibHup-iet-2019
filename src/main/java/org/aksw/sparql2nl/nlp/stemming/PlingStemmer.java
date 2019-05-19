@@ -838,7 +838,7 @@ public class PlingStemmer {
     /**
      * Returns true if a word is probably Greek
      */
-    private static boolean greek(String s) {
+    public static boolean greek(String s) {
         return (s.indexOf("ph") > 0 || s.indexOf('y') > 0 && s.endsWith("nges"));
     }
 
